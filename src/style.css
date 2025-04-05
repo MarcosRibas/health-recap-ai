@@ -68,3 +68,25 @@
 * {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
+
+/* Estilos para botões primários */
+.bg-primary {
+    background-color: #4ea1c2;
+}
+
+.hover\:bg-primary-dark:hover {
+    background-color: #3a89a9;
+}
+
+.text-primary {
+    color: #4ea1c2;
+}
+
+.hover\:text-primary:hover {
+    color: #3a89a9;
+}
+
+.focus\:ring-primary:focus {
+    --tw-ring-color: #4ea1c2;
+    --tw-ring-opacity: 1;
+}

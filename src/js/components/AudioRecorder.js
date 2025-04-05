@@ -96,5 +96,22 @@ export class AudioRecorder {
             recordingContent.appendChild(audioElement);
             recordingContent.appendChild(downloadButton);
         }
+
+        // Modifica o botão de upload para o botão de gerar documento
+        const uploadLabel = document.querySelector('label.flex-1');
+        if (uploadLabel) {
+            uploadLabel.innerHTML = `
+                <button type="button" class="w-full py-3 px-4 bg-primary text-white rounded-lg hover:bg-primary-dark flex items-center justify-center space-x-2 cursor-pointer">
+                    <i class="ph ph-sparkle text-xl"></i>
+                    <span>Gerar Documento</span>
+                </button>
+            `;
+            
+            // Remove o evento de upload de arquivo e adiciona o novo evento para gerar documento
+            const oldInput = uploadLabel.querySelector('input');
+            if (oldInput) {
+                oldInput.remove();
+            }
+        }
     }
 } 
