@@ -4,6 +4,9 @@ import './style.css'
 // Importa as funções de áudio
 import { listAudioDevices, startAudioAnalysis, stopAudioAnalysis } from './js/audioDevices.js'
 
+// Importa as funções de upload de arquivo
+import './js/fileUpload.js'
+
 // Inicialização da aplicação
 document.addEventListener('DOMContentLoaded', () => {
     // Lista os dispositivos de áudio disponíveis

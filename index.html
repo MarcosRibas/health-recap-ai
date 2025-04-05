@@ -88,10 +88,23 @@
                     </label>
                 </div>
 
-                <button type="button" class="w-full py-3 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 flex items-center justify-center space-x-2">
-                    <i class="ph ph-record text-xl"></i>
-                    <span>Gravar consulta</span>
-                </button>
+                <div class="flex gap-4">
+                    <button type="button" class="flex-1 py-3 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 flex items-center justify-center space-x-2">
+                        <i class="ph ph-record text-xl"></i>
+                        <span>Gravar consulta</span>
+                    </button>
+                    <label class="flex-1">
+                        <input type="file" 
+                               accept=".txt,audio/*" 
+                               class="hidden" 
+                               id="fileUpload">
+                        <div class="w-full py-3 px-4 bg-gray-600 text-white rounded-lg hover:bg-gray-700 flex items-center justify-center space-x-2 cursor-pointer">
+                            <i class="ph ph-upload-simple text-xl"></i>
+                            <span id="uploadText">Subir Gravação</span>
+                        </div>
+                    </label>
+                </div>
+                <div id="fileName" class="text-sm text-gray-600 mt-2 hidden"></div>
             </form>
         </main>
     </div>
