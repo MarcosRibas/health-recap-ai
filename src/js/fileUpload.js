@@ -1,6 +1,5 @@
 // Função para atualizar o nome do arquivo selecionado e exibir o áudio
 export function updateFileName(input) {
-    const fileNameDiv = document.getElementById('fileName');
     const uploadText = document.getElementById('uploadText');
     const recordingState = document.getElementById('recordingState');
     const recordingContent = recordingState.querySelector('.recording-content');
@@ -9,8 +8,6 @@ export function updateFileName(input) {
     if (input.files.length > 0) {
         const file = input.files[0];
         const fileName = file.name;
-        fileNameDiv.textContent = `Arquivo selecionado: ${fileName}`;
-        fileNameDiv.classList.remove('hidden');
         uploadText.textContent = 'Alterar arquivo';
 
         // Cria URL do arquivo de áudio
@@ -53,7 +50,6 @@ export function updateFileName(input) {
             `;
         }
     } else {
-        fileNameDiv.classList.add('hidden');
         uploadText.textContent = 'Subir Gravação';
         recordingState.classList.add('hidden');
         preRecordingState.classList.remove('hidden');
