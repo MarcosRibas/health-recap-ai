@@ -55,7 +55,7 @@ function applyTheme(theme) {
     // Atualiza elementos da navbar
     const navbar = document.querySelector('nav');
     if (navbar) {
-        navbar.className = classes.navbar;
+        navbar.className = `${classes.navbar} fixed top-0 left-0 right-0 z-50`;
     }
 
     // Atualiza o container principal

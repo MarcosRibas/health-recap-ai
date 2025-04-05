@@ -1,6 +1,6 @@
 export function createNavbar() {
     const navbar = document.createElement('nav');
-    navbar.className = 'bg-white shadow-sm';
+    navbar.className = 'bg-white shadow-sm fixed top-0 left-0 right-0 z-50';
     
     navbar.innerHTML = `
         <div class="container mx-auto px-4 h-16 flex items-center justify-between">
