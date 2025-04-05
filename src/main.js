@@ -13,6 +13,9 @@ import { createNavbar } from './components/Navbar.js'
 // Importa o gerenciador de temas
 import { initializeTheme } from './js/themeManager.js'
 
+// Importa o componente AppointmentForm
+import AppointmentForm from './components/AppointmentForm.js'
+
 // Adiciona a navbar ao DOM
 document.body.insertBefore(createNavbar(), document.body.firstChild);
 
@@ -21,6 +24,9 @@ initializeTheme();
 
 // Inicialização da aplicação
 document.addEventListener('DOMContentLoaded', () => {
+    // Renderiza o componente AppointmentForm primeiro
+    document.getElementById('app').innerHTML = AppointmentForm();
+
     // Lista os dispositivos de áudio disponíveis
     listAudioDevices();
 
