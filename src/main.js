@@ -7,6 +7,12 @@ import { listAudioDevices, startAudioAnalysis, stopAudioAnalysis } from './js/au
 // Importa as funções de upload de arquivo
 import './js/fileUpload.js'
 
+// Importa o componente da navbar
+import { createNavbar } from './components/Navbar.js'
+
+// Adiciona a navbar ao DOM
+document.body.insertBefore(createNavbar(), document.body.firstChild);
+
 // Inicialização da aplicação
 document.addEventListener('DOMContentLoaded', () => {
     // Lista os dispositivos de áudio disponíveis
