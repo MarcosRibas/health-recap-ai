@@ -11,4 +11,26 @@
 /* Estilos personalizados podem ser adicionados aqui */ 
 .form-container {
     width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+/* Estilos para o select de dispositivos de áudio */
+#audioDevices {
+    max-width: calc(100% - 120px); /* Reserva espaço para o ícone e as barras */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Container do microfone e barras de volume */
+.mic-volume-container {
+    min-width: 100px; /* Garante espaço mínimo para o ícone e barras */
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
