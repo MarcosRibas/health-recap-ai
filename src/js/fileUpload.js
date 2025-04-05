@@ -1,3 +1,5 @@
+import { saveAppointment } from './appointmentManager.js';
+
 // Função para atualizar o nome do arquivo selecionado e exibir o áudio
 export function updateFileName(input) {
     const uploadText = document.getElementById('uploadText');
@@ -48,6 +50,14 @@ export function updateFileName(input) {
                     <span>Gerar Documento</span>
                 </button>
             `;
+
+            // Adiciona o evento de clique para salvar a consulta
+            const generateButton = uploadLabel.querySelector('button');
+            if (generateButton) {
+                generateButton.onclick = () => {
+                    saveAppointment(file, fileName);
+                };
+            }
         }
     } else {
         uploadText.textContent = 'Subir Gravação';

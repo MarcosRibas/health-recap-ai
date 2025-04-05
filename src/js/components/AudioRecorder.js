@@ -1,3 +1,5 @@
+import { saveAppointment } from '../appointmentManager.js';
+
 export class AudioRecorder {
     constructor() {
         this.mediaRecorder = null;
@@ -5,6 +7,7 @@ export class AudioRecorder {
         this.isRecording = false;
         this.startTime = null;
         this.timerInterval = null;
+        this.currentAudioBlob = null;
     }
 
     startRecording(stream) {
@@ -69,6 +72,7 @@ export class AudioRecorder {
     }
 
     onRecordingComplete(audioUrl, audioBlob) {
+        this.currentAudioBlob = audioBlob;
         // Cria o elemento de áudio
         const audioElement = document.createElement('audio');
         audioElement.src = audioUrl;
@@ -111,6 +115,15 @@ export class AudioRecorder {
             const oldInput = uploadLabel.querySelector('input');
             if (oldInput) {
                 oldInput.remove();
+            }
+
+            // Adiciona o evento de clique para salvar a consulta
+            const generateButton = uploadLabel.querySelector('button');
+            if (generateButton) {
+                generateButton.onclick = () => {
+                    const fileName = `gravacao-${new Date().toISOString().slice(0,19).replace(/:/g, '-')}.wav`;
+                    saveAppointment(this.currentAudioBlob, fileName);
+                };
             }
         }
     }
