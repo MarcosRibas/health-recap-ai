@@ -35,7 +35,32 @@
     gap: 0.5rem;
 }
 
+/* Estilo para as barras de volume */
+.volume-bar {
+    background-color: #e5e7eb; /* gray-200 */
+}
+
 /* Estilo para as barras de volume ativas */
 .volume-bar.active {
     background-color: #4ea1c2; /* Cor primária */
+}
+
+/* Configurações do modo escuro */
+@media (prefers-color-scheme: dark) {
+    body {
+        color-scheme: dark;
+    }
+    
+    .volume-bar {
+        background-color: #4b5563; /* gray-600 */
+    }
+    
+    .volume-bar.active {
+        background-color: #60a5c4; /* Versão mais clara da cor primária */
+    }
+}
+
+/* Transições suaves para mudança de tema */
+* {
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
