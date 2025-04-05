@@ -1,9 +1,15 @@
+import { VolumeBars } from './components/VolumeBars.js';
+
 // Variáveis para controle do áudio
 let audioContext;
 let mediaStream;
 let mediaStreamSource;
 let analyser;
 let animationFrame;
+let volumeBars = {
+    preRecording: null,
+    recording: null
+};
 
 // Função para iniciar a análise de áudio
 async function startAudioAnalysis(deviceId) {
@@ -29,6 +35,17 @@ async function startAudioAnalysis(deviceId) {
         analyser.fftSize = 32;
         mediaStreamSource.connect(analyser);
 
+        // Inicializa as barras de volume se ainda não existirem
+        if (!volumeBars.preRecording) {
+            const preRecordingContainer = document.getElementById('preRecordingVolumeBars');
+            volumeBars.preRecording = new VolumeBars(preRecordingContainer);
+        }
+
+        if (!volumeBars.recording) {
+            const recordingContainer = document.getElementById('recordingVolumeBars');
+            volumeBars.recording = new VolumeBars(recordingContainer);
+        }
+
         // Inicia a visualização
         updateVolumeIndicator();
     } catch (error) {
@@ -44,9 +61,13 @@ function stopAudioAnalysis() {
     if (animationFrame) {
         cancelAnimationFrame(animationFrame);
     }
-    // Reseta o indicador visual
-    const indicators = document.querySelectorAll('.volume-bar');
-    indicators.forEach(indicator => indicator.style.backgroundColor = '#e5e7eb');
+    // Reseta os indicadores visuais
+    if (volumeBars.preRecording) {
+        volumeBars.preRecording.reset();
+    }
+    if (volumeBars.recording) {
+        volumeBars.recording.reset();
+    }
 }
 
 // Função para atualizar o indicador de volume
@@ -59,16 +80,12 @@ function updateVolumeIndicator() {
     const volume = average / 255; // Normaliza para 0-1
 
     // Atualiza as barras do indicador
-    const indicators = document.querySelectorAll('.volume-bar');
-    const activeCount = Math.floor(volume * indicators.length);
-    
-    indicators.forEach((indicator, index) => {
-        if (index < activeCount) {
-            indicator.classList.add('active');
-        } else {
-            indicator.classList.remove('active');
-        }
-    });
+    if (volumeBars.preRecording) {
+        volumeBars.preRecording.updateVolume(volume);
+    }
+    if (volumeBars.recording) {
+        volumeBars.recording.updateVolume(volume);
+    }
 
     // Continua a animação
     animationFrame = requestAnimationFrame(updateVolumeIndicator);
