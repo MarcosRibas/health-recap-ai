@@ -10,8 +10,14 @@ import './js/fileUpload.js'
 // Importa o componente da navbar
 import { createNavbar } from './components/Navbar.js'
 
+// Importa o gerenciador de temas
+import { initializeTheme } from './js/themeManager.js'
+
 // Adiciona a navbar ao DOM
 document.body.insertBefore(createNavbar(), document.body.firstChild);
+
+// Inicializa o sistema de temas
+initializeTheme();
 
 // Inicialização da aplicação
 document.addEventListener('DOMContentLoaded', () => {
@@ -31,12 +37,12 @@ document.addEventListener('DOMContentLoaded', () => {
     micButton.addEventListener('click', () => {
         if (isAnalyzing) {
             stopAudioAnalysis();
-            micButton.classList.remove('text-purple-600');
+            micButton.classList.remove('text-primary');
             micButton.classList.add('text-gray-500');
         } else {
             startAudioAnalysis(deviceSelect.value);
             micButton.classList.remove('text-gray-500');
-            micButton.classList.add('text-purple-600');
+            micButton.classList.add('text-primary');
         }
         isAnalyzing = !isAnalyzing;
     });
