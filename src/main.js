@@ -2,7 +2,7 @@
 import './style.css'
 
 // Importa as funções de áudio
-import { listAudioDevices, startAudioAnalysis, stopAudioAnalysis } from './js/audioDevices.js'
+import { listAudioDevices, startAudioAnalysis, stopAudioAnalysis, startRecording, stopRecording } from './js/audioDevices.js'
 
 // Importa as funções de upload de arquivo
 import './js/fileUpload.js'
@@ -61,67 +61,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Elementos do DOM
+    // Conecta os botões de gravação
     const startRecordingBtn = document.getElementById('startRecording');
     const stopRecordingBtn = document.getElementById('stopRecording');
-    const preRecordingState = document.getElementById('preRecordingState');
-    const recordingState = document.getElementById('recordingState');
-    const recordingTimer = document.getElementById('recordingTimer');
 
-    let startTime;
-    let timerInterval;
-
-    // Função para formatar o tempo (mm:ss)
-    function formatTime(ms) {
-        const seconds = Math.floor(ms / 1000);
-        const minutes = Math.floor(seconds / 60);
-        const remainingSeconds = seconds % 60;
-        return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
-    }
-
-    // Função para atualizar o timer
-    function updateTimer() {
-        const currentTime = Date.now() - startTime;
-        recordingTimer.textContent = formatTime(currentTime);
-    }
-
-    // Iniciar gravação
     startRecordingBtn.addEventListener('click', () => {
         isRecording = true;
-        
-        // Garantir que a análise de áudio está ativa
-        if (!isAnalyzing) {
-            startAudioAnalysis(deviceSelect.value);
-            isAnalyzing = true;
-        }
-        
-        // Mostrar estado de gravação
-        preRecordingState.classList.add('hidden');
-        recordingState.classList.remove('hidden');
-        
-        // Trocar botões
-        startRecordingBtn.classList.add('hidden');
-        stopRecordingBtn.classList.remove('hidden');
-        
-        // Iniciar timer
-        startTime = Date.now();
-        timerInterval = setInterval(updateTimer, 1000);
+        startRecording();
     });
 
-    // Parar gravação
     stopRecordingBtn.addEventListener('click', () => {
         isRecording = false;
-        
-        // Mostrar estado inicial
-        recordingState.classList.add('hidden');
-        preRecordingState.classList.remove('hidden');
-        
-        // Trocar botões
-        stopRecordingBtn.classList.add('hidden');
-        startRecordingBtn.classList.remove('hidden');
-        
-        // Parar timer
-        clearInterval(timerInterval);
-        recordingTimer.textContent = '00:00';
+        stopRecording();
+    });
+
+    // Conecta o select de dispositivos para mudança de dispositivo
+    deviceSelect.addEventListener('change', (event) => {
+        startAudioAnalysis(event.target.value);
     });
 }); 

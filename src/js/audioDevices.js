@@ -1,4 +1,5 @@
 import { VolumeBars } from './components/VolumeBars.js';
+import { AudioRecorder } from './components/AudioRecorder.js';
 
 // Variáveis para controle do áudio
 let audioContext;
@@ -10,6 +11,7 @@ let volumeBars = {
     preRecording: null,
     recording: null
 };
+let audioRecorder;
 
 // Função para iniciar a análise de áudio
 async function startAudioAnalysis(deviceId) {
@@ -44,6 +46,11 @@ async function startAudioAnalysis(deviceId) {
         if (!volumeBars.recording) {
             const recordingContainer = document.getElementById('recordingVolumeBars');
             volumeBars.recording = new VolumeBars(recordingContainer);
+        }
+
+        // Inicializa o gravador de áudio se ainda não existir
+        if (!audioRecorder) {
+            audioRecorder = new AudioRecorder();
         }
 
         // Inicia a visualização
@@ -91,6 +98,28 @@ function updateVolumeIndicator() {
     animationFrame = requestAnimationFrame(updateVolumeIndicator);
 }
 
+// Função para iniciar a gravação
+function startRecording() {
+    if (mediaStream && audioRecorder) {
+        audioRecorder.startRecording(mediaStream);
+        document.getElementById('preRecordingState').classList.add('hidden');
+        document.getElementById('recordingState').classList.remove('hidden');
+        document.getElementById('startRecording').classList.add('hidden');
+        document.getElementById('stopRecording').classList.remove('hidden');
+    }
+}
+
+// Função para parar a gravação
+function stopRecording() {
+    if (audioRecorder) {
+        audioRecorder.stopRecording();
+        document.getElementById('preRecordingState').classList.add('hidden');
+        document.getElementById('recordingState').classList.remove('hidden');
+        document.getElementById('startRecording').classList.remove('hidden');
+        document.getElementById('stopRecording').classList.add('hidden');
+    }
+}
+
 // Função para listar os dispositivos de áudio disponíveis
 async function listAudioDevices() {
     try {
@@ -131,4 +160,4 @@ async function listAudioDevices() {
 navigator.mediaDevices.addEventListener('devicechange', listAudioDevices);
 
 // Exporta as funções para uso em outros arquivos
-export { listAudioDevices, startAudioAnalysis, stopAudioAnalysis }; 
+export { listAudioDevices, startAudioAnalysis, stopAudioAnalysis, startRecording, stopRecording }; 
