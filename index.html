@@ -3,29 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Health Recap AI</title>
+    <title>Consulta Médica</title>
     <link href="/src/style.css" rel="stylesheet">
 </head>
-<body class="bg-gray-100">
-    <div class="container mx-auto px-4 py-8">
-        <header class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-gray-800">Health Recap AI</h1>
-            <p class="text-gray-600 mt-2">Sua plataforma de acompanhamento de saúde</p>
-        </header>
-        
-        <main class="bg-white rounded-lg shadow-md p-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="bg-blue-50 p-4 rounded-lg">
-                    <h2 class="text-xl font-semibold text-blue-800 mb-2">Estatísticas</h2>
-                    <p class="text-blue-600">Visualize seus dados de saúde</p>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-3xl">
+        <main class="bg-white form-container rounded-lg shadow-md p-6 mx-auto">
+            <form class="space-y-6">
+                <div class="space-y-2">
+                    <label class="block text-gray-700">
+                        Modelo de documento
+                        <div class="relative mt-2">
+                            <select class="block w-full py-2 px-4 border rounded-lg bg-white focus:ring-2 focus:ring-purple-500">
+                                <option>Anamnese padrão</option>
+                            </select>
+                        </div>
+                    </label>
                 </div>
-                <div class="bg-green-50 p-4 rounded-lg">
-                    <h2 class="text-xl font-semibold text-green-800 mb-2">Acompanhamento</h2>
-                    <p class="text-green-600">Monitore seu progresso</p>
+
+                <div class="space-y-2">
+                    <label class="block text-gray-700">
+                        Contexto do paciente
+                        <textarea
+                            class="mt-2 block w-full rounded-lg border p-4 text-gray-700 placeholder-gray-400 focus:ring-2 focus:ring-purple-500"
+                            rows="4"
+                            placeholder="Preencha este campo com informações clínicas do paciente: medicamentos, prontuários anteriores ou exames. Isso ajuda a fornecer um documento clínico mais completo."
+                        ></textarea>
+                    </label>
                 </div>
-            </div>
+
+                <div class="space-y-2">
+                    <label class="block text-gray-700">
+                        Gravação
+                        <div class="mt-2 flex items-center space-x-2 border rounded-lg p-2">
+                            <button type="button" class="p-2 text-gray-500 hover:text-purple-600">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+                                </svg>
+                            </button>
+                            <select class="flex-1 bg-transparent border-0 focus:ring-0">
+                                <option>Padrão - Microfone (HD Pro Webcam C920)</option>
+                            </select>
+                        </div>
+                    </label>
+                </div>
+
+                <button type="button" class="w-full py-3 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 flex items-center justify-center space-x-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"></path>
+                    </svg>
+                    <span>Gravar consulta</span>
+                </button>
+            </form>
         </main>
     </div>
-    <script type="module" src="/src/main.js"></script>
 </body>
 </html> 
