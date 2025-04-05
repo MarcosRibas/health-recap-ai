@@ -34,3 +34,8 @@
     align-items: center;
     gap: 0.5rem;
 }
+
+/* Estilo para as barras de volume ativas */
+.volume-bar.active {
+    background-color: #4ea1c2; /* Cor primária */
+}

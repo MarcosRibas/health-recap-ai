@@ -64,9 +64,9 @@ function updateVolumeIndicator() {
     
     indicators.forEach((indicator, index) => {
         if (index < activeCount) {
-            indicator.style.backgroundColor = '#9333ea'; // purple-600
+            indicator.classList.add('active');
         } else {
-            indicator.style.backgroundColor = '#e5e7eb'; // gray-200
+            indicator.classList.remove('active');
         }
     });
 
