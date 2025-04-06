@@ -65,17 +65,6 @@ export default function AppointmentView(appointment) {
                         </div>
                     </div>
                 ` : ''}
-
-                <div class="flex gap-4">
-                    <button type="button" id="backToForm" class="flex-1 py-3 px-4 bg-gray-500 text-white rounded-lg hover:bg-gray-600 flex items-center justify-center space-x-2">
-                        <i class="ph ph-arrow-left text-xl"></i>
-                        <span>Voltar</span>
-                    </button>
-                    <button type="button" id="generateDocument" class="flex-1 py-3 px-4 bg-primary text-white rounded-lg hover:bg-primary-dark flex items-center justify-center space-x-2">
-                        <i class="ph ph-sparkle text-xl"></i>
-                        <span>Gerar Documento</span>
-                    </button>
-                </div>
             </div>
         </main>
     `;

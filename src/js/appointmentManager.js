@@ -368,31 +368,10 @@ export function AppointmentView(appointment) {
                         </div>
                     </div>
                 ` : ''}
-
-                <div class="flex gap-4">
-                    <button id="backToForm" class="flex-1 py-2 px-4 bg-gray-500 text-white rounded-lg hover:bg-gray-600">
-                        Voltar
-                    </button>
-                    <button id="generateDocument" class="flex-1 py-2 px-4 bg-primary text-white rounded-lg hover:bg-primary-dark">
-                        Gerar Documento
-                    </button>
-                </div>
             </div>
         </main>
     `;
 }
-
-// Função para voltar ao formulário
-export function backToForm() {
-    const appElement = document.getElementById('app');
-    if (appElement) {
-        appElement.innerHTML = AppointmentForm();
-        initializeFormEvents();
-    }
-}
-
-// Torna a função disponível globalmente
-window.backToForm = backToForm;
 
 // Função para carregar uma consulta específica
 export async function loadAppointment(id) {
@@ -413,32 +392,6 @@ export async function loadAppointment(id) {
         // Renderiza a visualização da consulta
         appElement.innerHTML = AppointmentView(appointment);
 
-        // Adiciona os event listeners aos botões
-        const backButton = document.getElementById('backToForm');
-        if (backButton) {
-            backButton.addEventListener('click', backToForm);
-        }
-
-        const generateButton = document.getElementById('generateDocument');
-        if (generateButton) {
-            generateButton.addEventListener('click', async () => {
-                try {
-                    const generateResponse = await fetch(`/api/appointments/${id}/generate`, {
-                        method: 'POST'
-                    });
-                    
-                    if (!generateResponse.ok) {
-                        throw new Error(`Erro ao gerar documento: ${generateResponse.status} ${generateResponse.statusText}`);
-                    }
-                    
-                    const updatedAppointment = await generateResponse.json();
-                    appElement.innerHTML = AppointmentView(updatedAppointment);
-                } catch (error) {
-                    console.error('Erro ao gerar documento:', error);
-                    alert(`Erro ao gerar documento: ${error.message}`);
-                }
-            });
-        }
     } catch (error) {
         console.error('Erro ao carregar consulta:', error);
         const appElement = document.getElementById('app');
@@ -452,12 +405,6 @@ export async function loadAppointment(id) {
                         <p class="text-gray-600 dark:text-gray-300 mb-6">
                             ${error.message}
                         </p>
-                        <button 
-                            onclick="backToForm()"
-                            class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark"
-                        >
-                            Voltar ao formulário
-                        </button>
                     </div>
                 </div>
             `;
