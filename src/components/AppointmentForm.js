@@ -1,7 +1,7 @@
 export default async function AppointmentForm() {
     return `
         <main class="bg-white dark:bg-gray-800 form-container rounded-lg shadow-md p-6 mx-auto">
-            <form class="space-y-6" style="display: flex; flex-direction: column; gap: 10px;">
+            <form class="space-y-6">
                 <div class="space-y-2">
                     <label class="block text-gray-700 dark:text-gray-200">
                         Modelo de documento
