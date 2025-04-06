@@ -10,6 +10,9 @@ import { updateFileName } from './js/fileUpload.js'
 // Importa o componente da navbar
 import { createNavbar } from './components/Navbar.js'
 
+// Importa o componente da sidebar
+import { createSidebar } from './components/Sidebar.js'
+
 // Importa o gerenciador de temas
 import { initializeTheme } from './js/themeManager.js'
 
@@ -45,6 +48,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Adiciona a navbar ao DOM
         document.body.insertBefore(createNavbar(), document.body.firstChild);
 
+        // Adiciona a sidebar ao DOM
+        const sidebar = createSidebar();
+        document.body.insertBefore(sidebar, document.body.firstChild.nextSibling);
+
         // Inicializa o sistema de temas
         initializeTheme();
         
@@ -53,6 +60,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!appElement) {
             throw new Error('Elemento app não encontrado');
         }
+
+        // Ajusta o container principal para considerar a sidebar
+        appElement.parentElement.className = 'main-content container mx-auto px-4 py-8 max-w-3xl pt-24 transition-all duration-300 ml-0';
 
         // Renderiza o formulário
         appElement.innerHTML = await AppointmentForm();
