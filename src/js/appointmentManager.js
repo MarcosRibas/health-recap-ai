@@ -295,10 +295,12 @@ export async function saveAppointment(audioBlob, audioFileName) {
         }
         
         console.log('Consulta salva com sucesso:', result);
-        alert('Consulta salva com sucesso!');
         
         // Atualiza a lista de consultas na sidebar
-        updateAppointmentsList();
+        await updateAppointmentsList();
+        
+        // Carrega a visualização da consulta recém-criada
+        await loadAppointment(result.id);
         
     } catch (error) {
         console.error('Erro ao salvar consulta:', error);
