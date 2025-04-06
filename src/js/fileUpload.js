@@ -2,18 +2,33 @@ import { saveAppointment } from './appointmentManager.js';
 
 // Função para atualizar o nome do arquivo selecionado e exibir o áudio
 export function updateFileName(input) {
+    console.log('updateFileName chamado com:', input.files);
+    
     const uploadText = document.getElementById('uploadText');
     const recordingState = document.getElementById('recordingState');
     const recordingContent = recordingState.querySelector('.recording-content');
     const preRecordingState = document.getElementById('preRecordingState');
     
+    if (!uploadText || !recordingState || !recordingContent || !preRecordingState) {
+        console.error('Elementos necessários não encontrados:', {
+            uploadText: !!uploadText,
+            recordingState: !!recordingState,
+            recordingContent: !!recordingContent,
+            preRecordingState: !!preRecordingState
+        });
+        return;
+    }
+    
     if (input.files.length > 0) {
         const file = input.files[0];
         const fileName = file.name;
+        console.log('Arquivo selecionado:', fileName);
+        
         uploadText.textContent = 'Alterar arquivo';
 
         // Cria URL do arquivo de áudio
         const audioUrl = URL.createObjectURL(file);
+        console.log('URL do áudio criada:', audioUrl);
 
         // Cria o elemento de áudio
         const audioElement = document.createElement('audio');
@@ -37,9 +52,31 @@ export function updateFileName(input) {
         // Esconde o estado de pré-gravação e exibe o estado de gravação
         preRecordingState.classList.add('hidden');
         recordingState.classList.remove('hidden');
+        
+        // Limpa o conteúdo anterior e adiciona o novo
         recordingContent.innerHTML = '';
-        recordingContent.appendChild(audioElement);
-        recordingContent.appendChild(downloadButton);
+        
+        // Adiciona o cabeçalho
+        const header = document.createElement('div');
+        header.className = 'flex items-center justify-between w-full';
+        header.innerHTML = `
+            <div class="flex items-center space-x-2">
+                <span class="text-gray-700 dark:text-gray-200">Arquivo carregado</span>
+            </div>
+        `;
+        recordingContent.appendChild(header);
+        
+        // Adiciona o player de áudio
+        const audioContainer = document.createElement('div');
+        audioContainer.className = 'mt-4';
+        audioContainer.appendChild(audioElement);
+        recordingContent.appendChild(audioContainer);
+        
+        // Adiciona o botão de download
+        const downloadContainer = document.createElement('div');
+        downloadContainer.className = 'mt-2';
+        downloadContainer.appendChild(downloadButton);
+        recordingContent.appendChild(downloadContainer);
 
         // Modifica o botão de upload para o botão de gerar documento
         const uploadLabel = document.querySelector('label.flex-1');
@@ -69,22 +106,35 @@ export function updateFileName(input) {
         if (uploadLabel) {
             uploadLabel.innerHTML = `
                 <input type="file" 
-                       accept=".txt,audio/*" 
+                       accept="audio/*" 
                        class="hidden" 
                        id="fileUpload">
                 <div class="w-full py-3 px-4 bg-gray-600 text-white rounded-lg hover:bg-gray-700 flex items-center justify-center space-x-2 cursor-pointer">
                     <i class="ph ph-upload-simple text-xl text-white"></i>
-                    <span id="uploadText" class="text-white" style="color: white;">Subir Gravação</span>
+                    <span id="uploadText" class="text-white">Subir Gravação</span>
                 </div>
             `;
         }
     }
 }
 
-// Inicializa os listeners quando o documento carregar
+// Registra o evento de mudança do arquivo
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('Registrando evento de mudança do arquivo');
     const fileInput = document.getElementById('fileUpload');
     if (fileInput) {
-        fileInput.addEventListener('change', (e) => updateFileName(e.target));
+        // Remove qualquer listener anterior para evitar duplicação
+        fileInput.removeEventListener('change', handleFileChange);
+        // Adiciona o novo listener
+        fileInput.addEventListener('change', handleFileChange);
+        console.log('Evento de mudança do arquivo registrado');
+    } else {
+        console.error('Elemento fileUpload não encontrado');
     }
-}); 
+});
+
+// Função para lidar com a mudança do arquivo
+function handleFileChange(event) {
+    console.log('handleFileChange chamado');
+    updateFileName(event.target);
+} 

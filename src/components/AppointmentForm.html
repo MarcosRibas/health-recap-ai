@@ -71,14 +71,7 @@
                     <!-- Estado de gravação -->
                     <div id="recordingState" class="hidden w-full">
                         <div class="recording-content">
-                            <div class="flex items-center justify-between w-full">
-                                <div class="flex items-center space-x-2">
-                                    <div class="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
-                                    <span class="text-gray-700 dark:text-gray-200">Gravando</span>
-                                    <div id="recordingVolumeBars" class="volume-bars-container flex items-center space-x-0.5 h-4 ml-2"></div>
-                                </div>
-                                <span id="recordingTimer" class="text-gray-700 dark:text-gray-200">00:00</span>
-                            </div>
+                            <!-- O conteúdo será preenchido dinamicamente -->
                         </div>
                     </div>
                 </div>
@@ -100,12 +93,12 @@
 
             <label class="flex-1">
                 <input type="file" 
-                       accept=".txt,audio/*" 
+                       accept="audio/*" 
                        class="hidden" 
                        id="fileUpload">
                 <div class="w-full py-3 px-4 bg-gray-600 text-white rounded-lg hover:bg-gray-700 flex items-center justify-center space-x-2 cursor-pointer">
                     <i class="ph ph-upload-simple text-xl text-white"></i>
-                    <span id="uploadText" class="text-white" style="color: white;">Subir Gravação</span>
+                    <span id="uploadText" class="text-white">Subir Gravação</span>
                 </div>
             </label>
         </div>

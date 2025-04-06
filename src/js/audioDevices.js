@@ -13,6 +13,40 @@ let volumeBars = {
 };
 let audioRecorder;
 
+// Função para listar os dispositivos de áudio disponíveis
+async function listAudioDevices() {
+    try {
+        // Primeiro, solicita permissão para acessar os dispositivos de mídia
+        await navigator.mediaDevices.getUserMedia({ audio: true });
+        
+        // Obtém a lista de dispositivos
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        
+        // Filtra apenas os dispositivos de entrada de áudio (microfones)
+        const audioDevices = devices.filter(device => device.kind === 'audioinput');
+        
+        // Obtém o select de dispositivos
+        const deviceSelect = document.getElementById('audioDevices');
+        
+        // Limpa as opções existentes
+        deviceSelect.innerHTML = '';
+        
+        // Adiciona cada dispositivo como uma opção
+        audioDevices.forEach(device => {
+            const option = document.createElement('option');
+            option.value = device.deviceId;
+            option.text = device.label || `Microfone ${audioDevices.indexOf(device) + 1}`;
+            deviceSelect.appendChild(option);
+        });
+
+        return audioDevices;
+    } catch (error) {
+        console.error('Erro ao acessar dispositivos de áudio:', error);
+        alert('Por favor, permita o acesso ao microfone para continuar.');
+        return [];
+    }
+}
+
 // Função para iniciar a análise de áudio
 async function startAudioAnalysis(deviceId) {
     try {
@@ -40,12 +74,16 @@ async function startAudioAnalysis(deviceId) {
         // Inicializa as barras de volume se ainda não existirem
         if (!volumeBars.preRecording) {
             const preRecordingContainer = document.getElementById('preRecordingVolumeBars');
-            volumeBars.preRecording = new VolumeBars(preRecordingContainer);
+            if (preRecordingContainer) {
+                volumeBars.preRecording = new VolumeBars(preRecordingContainer);
+            }
         }
 
         if (!volumeBars.recording) {
             const recordingContainer = document.getElementById('recordingVolumeBars');
-            volumeBars.recording = new VolumeBars(recordingContainer);
+            if (recordingContainer) {
+                volumeBars.recording = new VolumeBars(recordingContainer);
+            }
         }
 
         // Inicializa o gravador de áudio se ainda não existir
@@ -57,6 +95,7 @@ async function startAudioAnalysis(deviceId) {
         updateVolumeIndicator();
     } catch (error) {
         console.error('Erro ao iniciar análise de áudio:', error);
+        throw error;
     }
 }
 
@@ -117,42 +156,6 @@ function stopRecording() {
         document.getElementById('recordingState').classList.remove('hidden');
         document.getElementById('startRecording').classList.remove('hidden');
         document.getElementById('stopRecording').classList.add('hidden');
-    }
-}
-
-// Função para listar os dispositivos de áudio disponíveis
-async function listAudioDevices() {
-    try {
-        // Primeiro, solicita permissão para acessar os dispositivos de mídia
-        await navigator.mediaDevices.getUserMedia({ audio: true });
-        
-        // Obtém a lista de dispositivos
-        const devices = await navigator.mediaDevices.enumerateDevices();
-        
-        // Filtra apenas os dispositivos de entrada de áudio (microfones)
-        const audioDevices = devices.filter(device => device.kind === 'audioinput');
-        
-        // Obtém o select de dispositivos
-        const deviceSelect = document.getElementById('audioDevices');
-        
-        // Limpa as opções existentes
-        deviceSelect.innerHTML = '';
-        
-        // Adiciona cada dispositivo como uma opção
-        audioDevices.forEach(device => {
-            const option = document.createElement('option');
-            option.value = device.deviceId;
-            option.text = device.label || `Microfone ${audioDevices.indexOf(device) + 1}`;
-            deviceSelect.appendChild(option);
-        });
-
-        // Se houver dispositivos, inicia a análise com o primeiro
-        if (audioDevices.length > 0) {
-            startAudioAnalysis(audioDevices[0].deviceId);
-        }
-    } catch (error) {
-        console.error('Erro ao acessar dispositivos de áudio:', error);
-        alert('Por favor, permita o acesso ao microfone para continuar.');
     }
 }
 
