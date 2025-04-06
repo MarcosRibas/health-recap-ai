@@ -67,11 +67,6 @@ export function updateFileName(input) {
         // Adiciona o cabeçalho
         const header = document.createElement('div');
         header.className = 'flex items-center justify-between w-full';
-        header.innerHTML = `
-            <div class="flex items-center space-x-2">
-                <span class="text-gray-700 dark:text-gray-200">Arquivo carregado</span>
-            </div>
-        `;
         recordingContent.appendChild(header);
         
         // Adiciona o player de áudio

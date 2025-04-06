@@ -1,5 +1,5 @@
 <main class="bg-white dark:bg-gray-800 form-container rounded-lg shadow-md p-6 mx-auto">
-    <form class="space-y-6">
+    <form class="space-y-6" style="display: flex; flex-direction: column; gap: 10px;">
         <div class="space-y-2">
             <label class="block text-gray-700 dark:text-gray-200">
                 Modelo de documento
@@ -54,7 +54,7 @@
         <div class="space-y-2">
             <label class="block text-gray-700 dark:text-gray-200">
                 Gravação
-                <div class="mt-4 flex items-center space-x-2 border dark:border-gray-600 rounded-lg p-4">
+                <div class="mt-2 flex items-center space-x-2 border dark:border-gray-600 rounded-lg p-4">
                     <!-- Estado inicial - Seleção de microfone -->
                     <div id="preRecordingState" class="flex items-center space-x-2 w-full">
                         <div class="flex items-center space-x-2">
@@ -78,7 +78,7 @@
             </label>
         </div>
 
-        <div class="flex gap-6 mt-6">
+        <div class="flex gap-6 mt-6" style="gap: 10px;">
             <!-- Botão de iniciar gravação -->
             <button type="button" id="startRecording" class="flex-1 py-3 px-4 bg-primary text-white rounded-lg hover:bg-primary-dark flex items-center justify-center space-x-2">
                 <i class="ph ph-record text-xl"></i>
@@ -98,7 +98,7 @@
                        id="fileUpload">
                 <div class="w-full py-3 px-4 bg-gray-600 text-white rounded-lg hover:bg-gray-700 flex items-center justify-center space-x-2 cursor-pointer">
                     <i class="ph ph-upload-simple text-xl text-white"></i>
-                    <span id="uploadText" class="text-white">Subir Gravação</span>
+                    <span id="uploadText" class="text-white" style="color: white;">Subir Gravação</span>
                 </div>
             </label>
         </div>
