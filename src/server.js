@@ -9,6 +9,18 @@ const __dirname = dirname(__filename);
 const app = express();
 const port = 3000;
 
+// Middleware para CORS
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+});
+
+// Middleware para processar JSON com limite aumentado
+app.use(express.json({limit: '50mb'}));
+app.use(express.urlencoded({limit: '50mb', extended: true}));
+
 // Configuração do banco de dados SQLite
 const db = new sqlite3.Database('health.db', (err) => {
     if (err) {
@@ -33,7 +45,6 @@ const db = new sqlite3.Database('health.db', (err) => {
 
 // Middleware para servir arquivos estáticos
 app.use(express.static(join(__dirname)));
-app.use(express.json());
 
 // Rota principal
 app.get('/', (req, res) => {
@@ -64,6 +75,25 @@ app.post('/api/appointments', (req, res) => {
             id: this.lastID,
             message: 'Consulta salva com sucesso' 
         });
+    });
+});
+
+// Rota para buscar todas as consultas
+app.get('/api/appointments', (req, res) => {
+    const query = `
+        SELECT id, template_type, created_at 
+        FROM appointments 
+        ORDER BY created_at DESC
+    `;
+    
+    db.all(query, [], (err, rows) => {
+        if (err) {
+            console.error('Erro ao buscar consultas:', err);
+            res.status(500).json({ error: 'Erro ao buscar consultas' });
+            return;
+        }
+        
+        res.json(rows);
     });
 });
 

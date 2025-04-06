@@ -1,3 +1,5 @@
+import { updateAppointmentsList } from '../js/appointmentManager.js';
+
 export function createSidebar() {
     // Cria a sidebar diretamente
     const sidebar = document.createElement('aside');
@@ -18,6 +20,12 @@ export function createSidebar() {
         </div>
         <div class="px-4">
             <div class="border-t border-gray-200 dark:border-neutral-700"></div>
+        </div>
+        <div class="p-4">
+            <h2 class="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-2">Consultas Recentes</h2>
+            <div id="appointmentsList" class="space-y-2">
+                <!-- As consultas serão inseridas aqui dinamicamente -->
+            </div>
         </div>
     `;
     
@@ -58,6 +66,9 @@ export function createSidebar() {
         // Aqui você pode adicionar a lógica para criar uma nova consulta
         console.log('Nova consulta');
     });
+
+    // Carrega as consultas inicialmente
+    updateAppointmentsList();
 
     return sidebar;
 } 
