@@ -23,9 +23,9 @@ document.body.insertBefore(createNavbar(), document.body.firstChild);
 initializeTheme();
 
 // Inicialização da aplicação
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     // Renderiza o componente AppointmentForm primeiro
-    document.getElementById('app').innerHTML = AppointmentForm();
+    document.getElementById('app').innerHTML = await AppointmentForm();
 
     // Lista os dispositivos de áudio disponíveis
     listAudioDevices();
