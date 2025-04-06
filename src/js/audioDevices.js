@@ -72,18 +72,15 @@ async function startAudioAnalysis(deviceId) {
         mediaStreamSource.connect(analyser);
 
         // Inicializa as barras de volume se ainda não existirem
-        if (!volumeBars.preRecording) {
-            const preRecordingContainer = document.getElementById('preRecordingVolumeBars');
-            if (preRecordingContainer) {
-                volumeBars.preRecording = new VolumeBars(preRecordingContainer);
-            }
+        const preRecordingContainer = document.getElementById('preRecordingVolumeBars');
+        const recordingContainer = document.getElementById('recordingVolumeBars');
+        
+        if (preRecordingContainer && !volumeBars.preRecording) {
+            volumeBars.preRecording = new VolumeBars(preRecordingContainer);
         }
 
-        if (!volumeBars.recording) {
-            const recordingContainer = document.getElementById('recordingVolumeBars');
-            if (recordingContainer) {
-                volumeBars.recording = new VolumeBars(recordingContainer);
-            }
+        if (recordingContainer && !volumeBars.recording) {
+            volumeBars.recording = new VolumeBars(recordingContainer);
         }
 
         // Inicializa o gravador de áudio se ainda não existir
@@ -118,6 +115,8 @@ function stopAudioAnalysis() {
 
 // Função para atualizar o indicador de volume
 function updateVolumeIndicator() {
+    if (!analyser) return;
+
     const dataArray = new Uint8Array(analyser.frequencyBinCount);
     analyser.getByteFrequencyData(dataArray);
 
@@ -138,13 +137,35 @@ function updateVolumeIndicator() {
 }
 
 // Função para iniciar a gravação
-function startRecording() {
-    if (mediaStream && audioRecorder) {
-        audioRecorder.startRecording(mediaStream);
-        document.getElementById('preRecordingState').classList.add('hidden');
-        document.getElementById('recordingState').classList.remove('hidden');
-        document.getElementById('startRecording').classList.add('hidden');
-        document.getElementById('stopRecording').classList.remove('hidden');
+async function startRecording() {
+    try {
+        if (mediaStream && audioRecorder) {
+            // Inicia a gravação
+            audioRecorder.startRecording(mediaStream);
+            
+            // Atualiza a interface
+            document.getElementById('preRecordingState').classList.add('hidden');
+            document.getElementById('recordingState').classList.remove('hidden');
+            document.getElementById('startRecording').classList.add('hidden');
+            document.getElementById('stopRecording').classList.remove('hidden');
+            
+            // Pequeno delay para garantir que o DOM foi atualizado
+            await new Promise(resolve => setTimeout(resolve, 50));
+            
+            // Inicializa as barras de volume para a gravação
+            const recordingContainer = document.getElementById('recordingVolumeBars');
+            if (recordingContainer && !volumeBars.recording) {
+                volumeBars.recording = new VolumeBars(recordingContainer);
+            }
+            
+            // Garante que a análise de áudio está rodando
+            if (!animationFrame) {
+                updateVolumeIndicator();
+            }
+        }
+    } catch (error) {
+        console.error('Erro ao iniciar gravação:', error);
+        alert('Erro ao iniciar gravação. Por favor, tente novamente.');
     }
 }
 

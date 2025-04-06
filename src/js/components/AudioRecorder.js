@@ -32,16 +32,47 @@ export class AudioRecorder {
         // Atualiza a interface para o estado de gravação
         const recordingState = document.getElementById('recordingState');
         const recordingContent = recordingState.querySelector('.recording-content');
-        recordingContent.innerHTML = `
-            <div class="flex items-center justify-between w-full">
-                <div class="flex items-center space-x-2">
-                    <div class="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
-                    <span class="text-gray-700 dark:text-gray-200">Gravando</span>
-                    <div id="recordingVolumeBars" class="volume-bars-container flex items-center space-x-0.5 h-4 ml-2"></div>
-                </div>
-                <span id="recordingTimer" class="text-gray-700 dark:text-gray-200">00:00</span>
-            </div>
-        `;
+        
+        // Limpa o conteúdo anterior
+        recordingContent.innerHTML = '';
+        
+        // Cria o container principal
+        const mainContainer = document.createElement('div');
+        mainContainer.className = 'flex items-center justify-between w-full';
+        
+        // Cria o container do lado esquerdo
+        const leftContainer = document.createElement('div');
+        leftContainer.className = 'flex items-center space-x-2';
+        
+        // Cria o indicador de gravação
+        const recordingIndicator = document.createElement('div');
+        recordingIndicator.className = 'w-3 h-3 bg-red-500 rounded-full animate-pulse';
+        
+        // Cria o texto de gravação
+        const recordingText = document.createElement('span');
+        recordingText.className = 'text-gray-700 dark:text-gray-200';
+        recordingText.textContent = 'Gravando';
+        
+        // Cria o container das barras de volume
+        const volumeBarsContainer = document.createElement('div');
+        volumeBarsContainer.id = 'recordingVolumeBars';
+        volumeBarsContainer.className = 'volume-bars-container flex items-center space-x-0.5 h-4 ml-2';
+        
+        // Cria o timer
+        const timerElement = document.createElement('span');
+        timerElement.id = 'recordingTimer';
+        timerElement.className = 'text-gray-700 dark:text-gray-200';
+        timerElement.textContent = '00:00';
+        
+        // Monta a estrutura
+        leftContainer.appendChild(recordingIndicator);
+        leftContainer.appendChild(recordingText);
+        leftContainer.appendChild(volumeBarsContainer);
+        
+        mainContainer.appendChild(leftContainer);
+        mainContainer.appendChild(timerElement);
+        
+        recordingContent.appendChild(mainContainer);
     }
 
     stopRecording() {

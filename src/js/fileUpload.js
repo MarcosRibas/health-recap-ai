@@ -2,7 +2,6 @@ import { saveAppointment } from './appointmentManager.js';
 
 // Função para atualizar o nome do arquivo selecionado e exibir o áudio
 export function updateFileName(input) {
-    console.log('updateFileName chamado com:', input.files);
     
     const uploadText = document.getElementById('uploadText');
     const recordingState = document.getElementById('recordingState');
@@ -22,19 +21,28 @@ export function updateFileName(input) {
     if (input.files.length > 0) {
         const file = input.files[0];
         const fileName = file.name;
-        console.log('Arquivo selecionado:', fileName);
         
         uploadText.textContent = 'Alterar arquivo';
 
         // Cria URL do arquivo de áudio
         const audioUrl = URL.createObjectURL(file);
-        console.log('URL do áudio criada:', audioUrl);
 
         // Cria o elemento de áudio
         const audioElement = document.createElement('audio');
         audioElement.src = audioUrl;
         audioElement.controls = true;
         audioElement.className = 'w-full mt-2';
+
+        // Adiciona tratamento de erro para o áudio
+        audioElement.onerror = (e) => {
+            console.error('Erro ao carregar o áudio:', e);
+            alert('Erro ao carregar o áudio. Por favor, tente novamente.');
+        };
+
+        // Adiciona evento de carregamento do áudio
+        audioElement.onloadeddata = () => {
+            console.log('Áudio carregado com sucesso');
+        };
 
         // Cria o botão de download
         const downloadButton = document.createElement('button');

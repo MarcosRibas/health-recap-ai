@@ -36,7 +36,6 @@ async function initializeAudioAnalysis(isRecording, deviceSelect) {
 
 // Inicialização da aplicação
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log('Inicializando aplicação');
     
     // Variáveis de controle
     let isRecording = false;
@@ -57,7 +56,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Renderiza o formulário
         appElement.innerHTML = await AppointmentForm();
-        console.log('AppointmentForm renderizado');
 
         // Pequeno delay para garantir que o DOM está atualizado
         await new Promise(resolve => setTimeout(resolve, 100));
@@ -85,12 +83,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Registra o evento de mudança do arquivo
         if (fileInput) {
-            console.log('Registrando evento de mudança do arquivo');
             fileInput.addEventListener('change', (event) => {
-                console.log('handleFileChange chamado');
                 updateFileName(event.target);
             });
-            console.log('Evento de mudança do arquivo registrado');
         }
 
         // Inicializa a análise de áudio após a renderização do formulário
@@ -134,7 +129,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Conecta os botões de gravação
         if (startRecordingBtn) {
             startRecordingBtn.addEventListener('click', () => {
-                console.log('Iniciando gravação');
                 isRecording = true;
                 startRecording();
             });
@@ -142,7 +136,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (stopRecordingBtn) {
             stopRecordingBtn.addEventListener('click', () => {
-                console.log('Parando gravação');
                 isRecording = false;
                 stopRecording();
             });
