@@ -35,7 +35,12 @@ const themeClasses = {
 
 // Função para obter o tema atual
 function getCurrentTheme() {
-    return localStorage.getItem(THEME_STORAGE_KEY) || LIGHT_THEME;
+    // Verifica se há preferência do sistema
+    if (!localStorage.getItem(THEME_STORAGE_KEY)) {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        return prefersDark ? DARK_THEME : LIGHT_THEME;
+    }
+    return localStorage.getItem(THEME_STORAGE_KEY);
 }
 
 // Função para aplicar o tema
@@ -141,7 +146,19 @@ function updateThemeButtons(currentTheme) {
 // Função para inicializar o sistema de temas
 export function initializeTheme() {
     const currentTheme = getCurrentTheme();
+    
+    // Aplica o tema inicial
     applyTheme(currentTheme);
+
+    // Observa mudanças no DOM para reaplicar o tema quando novos elementos são adicionados
+    const observer = new MutationObserver(() => {
+        applyTheme(getCurrentTheme());
+    });
+
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
 
     // Adiciona listeners aos botões de tema
     document.addEventListener('click', (e) => {
@@ -149,6 +166,13 @@ export function initializeTheme() {
         if (themeButton) {
             const newTheme = themeButton.dataset.theme;
             applyTheme(newTheme);
+        }
+    });
+
+    // Observa mudanças na preferência de tema do sistema
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+        if (!localStorage.getItem(THEME_STORAGE_KEY)) {
+            applyTheme(e.matches ? DARK_THEME : LIGHT_THEME);
         }
     });
 }
