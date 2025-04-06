@@ -394,6 +394,15 @@ export async function loadAppointment(id) {
         // Renderiza a visualização da consulta
         appElement.innerHTML = AppointmentView(appointment);
 
+        // Abre a sidebar automaticamente
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.querySelector('.main-content');
+        if (sidebar && mainContent) {
+            sidebar.classList.remove('-translate-x-full');
+            mainContent.classList.remove('ml-0');
+            mainContent.classList.add('ml-64');
+        }
+
     } catch (error) {
         console.error('Erro ao carregar consulta:', error);
         const appElement = document.getElementById('app');
