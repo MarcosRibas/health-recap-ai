@@ -348,7 +348,7 @@ export function AppointmentView(appointment) {
                 <div class="space-y-2">
                     <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Áudio da Consulta</h3>
                     <audio controls class="w-full">
-                        <source src="data:audio/wav;base64,${appointment.audio_data}" type="audio/wav">
+                        <source src="data:audio/wav;base64,${appointment.audio_file}" type="audio/wav">
                         Seu navegador não suporta o elemento de áudio.
                     </audio>
                 </div>
