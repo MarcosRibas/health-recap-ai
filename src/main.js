@@ -35,6 +35,10 @@ export async function initializeFormEvents() {
     // Inicializa a análise de áudio
     if (deviceSelect) {
         await listAudioDevices();
+        // Inicia a análise de áudio com o dispositivo selecionado
+        if (deviceSelect.value) {
+            await startAudioAnalysis(deviceSelect.value);
+        }
         deviceSelect.addEventListener('change', async (event) => {
             await startAudioAnalysis(event.target.value);
         });
