@@ -1,13 +1,144 @@
+// Importa a função initializeFormEvents
+import { initializeFormEvents } from '../main.js';
+
+// Função para gerar o formulário
+export function AppointmentForm() {
+    return `
+        <main class="bg-white dark:bg-gray-800 form-container rounded-lg shadow-md p-6 mx-auto">
+            <form class="space-y-6" style="display: flex; flex-direction: column; gap: 10px;">
+                <div class="space-y-2">
+                    <label class="block text-gray-700 dark:text-gray-200">
+                        Modelo de documento
+                        <div class="relative mt-2">
+                            <select class="block w-full py-2 px-4 border rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-primary">
+                                <option>Anamnese padrão</option>
+                                <option>Cardiologia</option>
+                                <option>Cirurgia</option>
+                                <option>Consulta de retorno</option>
+                                <option>Dermatologia</option>
+                                <option>Endocrinologia</option>
+                                <option>Evolução de enfermaria</option>
+                                <option>Fisioterapia</option>
+                                <option>Gastroenterologia</option>
+                                <option>Geriatria</option>
+                                <option>Geriatria - Novo</option>
+                                <option>Ginecologia / Saúde da mulher</option>
+                                <option>Medicina do Esporte</option>
+                                <option>Medicina do Trabalho</option>
+                                <option>Neurologia</option>
+                                <option>Nutrição</option>
+                                <option>Nutrologia</option>
+                                <option>Obstetrícia</option>
+                                <option>Odontologia</option>
+                                <option>Oftalmologia</option>
+                                <option>Oncologia</option>
+                                <option>Ortopedia</option>
+                                <option>Otorrinolaringologia</option>
+                                <option>Pediatria</option>
+                                <option>Perícia médica</option>
+                                <option>Pneumologia</option>
+                                <option>Psicologia</option>
+                                <option>Psiquiatria</option>
+                                <option>Reumatologia</option>
+                                <option>SOAP</option>
+                            </select>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-gray-700 dark:text-gray-200">
+                        Contexto do paciente
+                        <textarea
+                            class="mt-2 block w-full rounded-lg border p-4 text-gray-700 dark:text-white dark:bg-gray-700 placeholder-gray-400 focus:ring-2 focus:ring-primary"
+                            rows="4"
+                            placeholder="Preencha este campo com informações clínicas do paciente: medicamentos, prontuários anteriores ou exames. Isso ajuda a fornecer um documento clínico mais completo."
+                        ></textarea>
+                    </label>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-gray-700 dark:text-gray-200">
+                        Gravação
+                        <div class="mt-2 flex items-center space-x-2 border dark:border-gray-600 rounded-lg p-4">
+                            <!-- Estado inicial - Seleção de microfone -->
+                            <div id="preRecordingState" class="flex items-center space-x-2 w-full">
+                                <div class="flex items-center space-x-2">
+                                    <button type="button" class="p-2 text-gray-500 hover:text-primary">
+                                        <i class="ph ph-microphone text-2xl"></i>
+                                    </button>
+                                    <div id="preRecordingVolumeBars" class="volume-bars-container flex items-center space-x-0.5 h-4"></div>
+                                </div>
+                                <select id="audioDevices" class="flex-1 bg-transparent border-0 focus:ring-0 truncate text-ellipsis dark:text-gray-200 dark:[&>option]:bg-gray-700 dark:[&>option]:text-gray-200">
+                                    <option>Selecione um microfone...</option>
+                                </select>
+                            </div>
+
+                            <!-- Estado de gravação -->
+                            <div id="recordingState" class="hidden w-full">
+                                <div class="recording-content">
+                                    <!-- O conteúdo será preenchido dinamicamente -->
+                                </div>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="flex gap-6 mt-6" style="gap: 10px;">
+                    <!-- Botão de iniciar gravação -->
+                    <button type="button" id="startRecording" class="flex-1 py-3 px-4 bg-primary text-white rounded-lg hover:bg-primary-dark flex items-center justify-center space-x-2">
+                        <i class="ph ph-record text-xl"></i>
+                        <span>Gravar consulta</span>
+                    </button>
+
+                    <!-- Botão de finalizar gravação -->
+                    <button type="button" id="stopRecording" class="hidden flex-1 py-3 px-4 bg-red-500 text-white rounded-lg hover:bg-red-600 flex items-center justify-center space-x-2">
+                        <i class="ph ph-stop-circle text-xl"></i>
+                        <span>Finalizar consulta</span>
+                    </button>
+
+                    <label class="flex-1">
+                        <input type="file" 
+                               accept="audio/*" 
+                               class="hidden" 
+                               id="fileUpload">
+                        <div class="w-full py-3 px-4 bg-gray-600 text-white rounded-lg hover:bg-gray-700 flex items-center justify-center space-x-2 cursor-pointer">
+                            <i class="ph ph-upload-simple text-xl text-white"></i>
+                            <span id="uploadText" class="text-white" style="color: white;">Subir Gravação</span>
+                        </div>
+                    </label>
+                </div>
+            </form>
+        </main>
+    `;
+}
+
 // Função para atualizar a lista de consultas na sidebar
 export async function updateAppointmentsList() {
     try {
-        const response = await fetch('http://localhost:3000/api/appointments');
+        const response = await fetch('/api/appointments');
+        
+        if (!response.ok) {
+            throw new Error(`Erro ao buscar consultas: ${response.status} ${response.statusText}`);
+        }
+        
         const appointments = await response.json();
         
         const appointmentsList = document.querySelector('#appointmentsList');
-        if (!appointmentsList) return;
+        if (!appointmentsList) {
+            throw new Error('Elemento appointmentsList não encontrado');
+        }
         
         appointmentsList.innerHTML = ''; // Limpa a lista atual
+        
+        if (appointments.length === 0) {
+            appointmentsList.innerHTML = `
+                <div class="text-sm text-gray-500 dark:text-gray-400 text-center p-4">
+                    Nenhuma consulta encontrada
+                </div>
+            `;
+            return;
+        }
         
         appointments.forEach(appointment => {
             const date = new Date(appointment.created_at);
@@ -27,14 +158,21 @@ export async function updateAppointmentsList() {
             `;
             
             appointmentElement.onclick = () => {
-                // Aqui você pode adicionar a lógica para abrir a consulta
-                console.log('Abrir consulta:', appointment.id);
+                loadAppointment(appointment.id);
             };
             
             appointmentsList.appendChild(appointmentElement);
         });
     } catch (error) {
         console.error('Erro ao atualizar lista de consultas:', error);
+        const appointmentsList = document.querySelector('#appointmentsList');
+        if (appointmentsList) {
+            appointmentsList.innerHTML = `
+                <div class="text-sm text-red-500 dark:text-red-400 text-center p-4">
+                    Erro ao carregar consultas: ${error.message}
+                </div>
+            `;
+        }
     }
 }
 
@@ -142,7 +280,7 @@ export async function saveAppointment(audioBlob, audioFileName) {
         };
         
         // Envia os dados para o servidor
-        const response = await fetch('http://localhost:3000/api/appointments', {
+        const response = await fetch('/api/appointments', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -181,4 +319,150 @@ function blobToBase64(blob) {
         reader.onerror = reject;
         reader.readAsDataURL(blob);
     });
+}
+
+// Função para exibir os detalhes da consulta
+export function AppointmentView(appointment) {
+    const date = new Date(appointment.created_at);
+    const formattedDate = date.toLocaleDateString('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+
+    return `
+        <main class="bg-white dark:bg-gray-800 form-container rounded-lg shadow-md p-6 mx-auto">
+            <div class="space-y-6">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">${appointment.template_type}</h2>
+                    <span class="text-sm text-gray-500 dark:text-gray-400">${formattedDate}</span>
+                </div>
+
+                <div class="space-y-2">
+                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Contexto do Paciente</h3>
+                    <p class="text-gray-600 dark:text-gray-300">${appointment.patient_context || 'Nenhum contexto fornecido'}</p>
+                </div>
+
+                <div class="space-y-2">
+                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Áudio da Consulta</h3>
+                    <audio controls class="w-full">
+                        <source src="data:audio/wav;base64,${appointment.audio_data}" type="audio/wav">
+                        Seu navegador não suporta o elemento de áudio.
+                    </audio>
+                </div>
+
+                ${appointment.transcription ? `
+                    <div class="space-y-2">
+                        <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Transcrição</h3>
+                        <p class="text-gray-600 dark:text-gray-300">${appointment.transcription}</p>
+                    </div>
+                ` : ''}
+
+                ${appointment.generated_document ? `
+                    <div class="space-y-2">
+                        <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Documento Gerado</h3>
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <pre class="text-sm text-gray-600 dark:text-gray-300 whitespace-pre-wrap">${appointment.generated_document}</pre>
+                        </div>
+                    </div>
+                ` : ''}
+
+                <div class="flex gap-4">
+                    <button id="backToForm" class="flex-1 py-2 px-4 bg-gray-500 text-white rounded-lg hover:bg-gray-600">
+                        Voltar
+                    </button>
+                    <button id="generateDocument" class="flex-1 py-2 px-4 bg-primary text-white rounded-lg hover:bg-primary-dark">
+                        Gerar Documento
+                    </button>
+                </div>
+            </div>
+        </main>
+    `;
+}
+
+// Função para voltar ao formulário
+export function backToForm() {
+    const appElement = document.getElementById('app');
+    if (appElement) {
+        appElement.innerHTML = AppointmentForm();
+        initializeFormEvents();
+    }
+}
+
+// Torna a função disponível globalmente
+window.backToForm = backToForm;
+
+// Função para carregar uma consulta específica
+export async function loadAppointment(id) {
+    try {
+        const response = await fetch(`/api/appointments/${id}`);
+        
+        if (!response.ok) {
+            throw new Error(`Erro ao carregar consulta: ${response.status} ${response.statusText}`);
+        }
+
+        const appointment = await response.json();
+
+        const appElement = document.getElementById('app');
+        if (!appElement) {
+            throw new Error('Elemento app não encontrado');
+        }
+
+        // Renderiza a visualização da consulta
+        appElement.innerHTML = AppointmentView(appointment);
+
+        // Adiciona os event listeners aos botões
+        const backButton = document.getElementById('backToForm');
+        if (backButton) {
+            backButton.addEventListener('click', backToForm);
+        }
+
+        const generateButton = document.getElementById('generateDocument');
+        if (generateButton) {
+            generateButton.addEventListener('click', async () => {
+                try {
+                    const generateResponse = await fetch(`/api/appointments/${id}/generate`, {
+                        method: 'POST'
+                    });
+                    
+                    if (!generateResponse.ok) {
+                        throw new Error(`Erro ao gerar documento: ${generateResponse.status} ${generateResponse.statusText}`);
+                    }
+                    
+                    const updatedAppointment = await generateResponse.json();
+                    appElement.innerHTML = AppointmentView(updatedAppointment);
+                } catch (error) {
+                    console.error('Erro ao gerar documento:', error);
+                    alert(`Erro ao gerar documento: ${error.message}`);
+                }
+            });
+        }
+    } catch (error) {
+        console.error('Erro ao carregar consulta:', error);
+        const appElement = document.getElementById('app');
+        if (appElement) {
+            appElement.innerHTML = `
+                <div class="bg-white dark:bg-gray-800 form-container rounded-lg shadow-md p-6 mx-auto">
+                    <div class="text-center">
+                        <h2 class="text-xl font-semibold text-red-600 dark:text-red-400 mb-4">
+                            Erro ao carregar consulta
+                        </h2>
+                        <p class="text-gray-600 dark:text-gray-300 mb-6">
+                            ${error.message}
+                        </p>
+                        <button 
+                            onclick="backToForm()"
+                            class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark"
+                        >
+                            Voltar ao formulário
+                        </button>
+                    </div>
+                </div>
+            `;
+        } else {
+            alert('Erro ao carregar consulta. Por favor, tente novamente.');
+        }
+    }
 } 

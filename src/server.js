@@ -11,7 +11,7 @@ const port = 3000;
 
 // Middleware para CORS
 app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
+    res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     next();
@@ -78,7 +78,7 @@ app.post('/api/appointments', (req, res) => {
     });
 });
 
-// Rota para buscar todas as consultas
+// Rota para buscar todas as consultas (lista resumida)
 app.get('/api/appointments', (req, res) => {
     const query = `
         SELECT id, template_type, created_at 
@@ -94,6 +94,31 @@ app.get('/api/appointments', (req, res) => {
         }
         
         res.json(rows);
+    });
+});
+
+// Rota para buscar uma consulta específica
+app.get('/api/appointments/:id', (req, res) => {
+    const query = `
+        SELECT id, template_type, patient_context, audio_file, audio_filename, 
+               transcription, generated_document, created_at, updated_at
+        FROM appointments 
+        WHERE id = ?
+    `;
+    
+    db.get(query, [req.params.id], (err, row) => {
+        if (err) {
+            console.error('Erro ao buscar consulta:', err);
+            res.status(500).json({ error: 'Erro ao buscar consulta' });
+            return;
+        }
+        
+        if (!row) {
+            res.status(404).json({ error: 'Consulta não encontrada' });
+            return;
+        }
+        
+        res.json(row);
     });
 });
 

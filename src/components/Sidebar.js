@@ -1,4 +1,4 @@
-import { updateAppointmentsList } from '../js/appointmentManager.js';
+import { updateAppointmentsList, AppointmentForm } from '../js/appointmentManager.js';
 
 export function createSidebar() {
     // Cria a sidebar diretamente
@@ -62,9 +62,14 @@ export function createSidebar() {
     }
 
     // Adiciona evento para o botão de nova consulta
-    sidebar.querySelector('#newAppointmentBtn').addEventListener('click', () => {
-        // Aqui você pode adicionar a lógica para criar uma nova consulta
-        console.log('Nova consulta');
+    sidebar.querySelector('#newAppointmentBtn').addEventListener('click', async () => {
+        const appElement = document.getElementById('app');
+        if (appElement) {
+            appElement.innerHTML = AppointmentForm();
+            // Importa e inicializa os eventos do formulário
+            const { initializeFormEvents } = await import('../main.js');
+            await initializeFormEvents();
+        }
     });
 
     // Carrega as consultas inicialmente
