@@ -116,25 +116,4 @@ export function updateFileName(input) {
             `;
         }
     }
-}
-
-// Registra o evento de mudança do arquivo
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('Registrando evento de mudança do arquivo');
-    const fileInput = document.getElementById('fileUpload');
-    if (fileInput) {
-        // Remove qualquer listener anterior para evitar duplicação
-        fileInput.removeEventListener('change', handleFileChange);
-        // Adiciona o novo listener
-        fileInput.addEventListener('change', handleFileChange);
-        console.log('Evento de mudança do arquivo registrado');
-    } else {
-        console.error('Elemento fileUpload não encontrado');
-    }
-});
-
-// Função para lidar com a mudança do arquivo
-function handleFileChange(event) {
-    console.log('handleFileChange chamado');
-    updateFileName(event.target);
 } 
