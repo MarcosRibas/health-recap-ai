@@ -142,7 +142,10 @@ export async function updateAppointmentsList() {
             return;
         }
         
-        appointments.forEach(appointment => {
+        // Pega apenas as últimas 5 consultas (já vêm ordenadas do servidor)
+        const recentAppointments = appointments.slice(0, 5);
+        
+        recentAppointments.forEach(appointment => {
             const date = new Date(appointment.created_at);
             const formattedDate = date.toLocaleDateString('pt-BR', {
                 day: '2-digit',
@@ -153,9 +156,9 @@ export async function updateAppointmentsList() {
             });
             
             const appointmentElement = document.createElement('button');
-            appointmentElement.className = 'w-full text-left px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-neutral-700 transition-colors duration-200';
+            appointmentElement.className = 'w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-neutral-700 transition-colors duration-200 rounded-lg';
             appointmentElement.innerHTML = `
-                <div class="text-sm font-medium text-gray-700 dark:text-gray-200">${appointment.template_type}</div>
+                <div class="text-sm">${appointment.template_type}</div>
                 <div class="text-xs text-gray-500 dark:text-gray-400">${formattedDate}</div>
             `;
             
@@ -297,8 +300,6 @@ export async function saveAppointment(audioBlob, audioFileName, textContent = nu
             throw new Error(result.error || 'Erro ao salvar consulta');
         }
         
-        console.log('Consulta salva com sucesso:', result);
-        
         // Atualiza a lista de consultas na sidebar
         await updateAppointmentsList();
         
@@ -311,7 +312,7 @@ export async function saveAppointment(audioBlob, audioFileName, textContent = nu
     } catch (error) {
         console.error('Erro ao salvar consulta:', error);
         alert(`Erro ao salvar consulta: ${error.message}`);
-        throw error; // Re-lança o erro para ser tratado pelo chamador
+        throw error;
     }
 }
 

@@ -80,6 +80,8 @@ app.post('/api/appointments', (req, res) => {
 
 // Rota para buscar todas as consultas (lista resumida)
 app.get('/api/appointments', (req, res) => {
+    console.log('Recebida requisição para buscar consultas');
+    
     const query = `
         SELECT id, template_type, created_at 
         FROM appointments 
@@ -93,6 +95,7 @@ app.get('/api/appointments', (req, res) => {
             return;
         }
         
+        console.log('Consultas encontradas:', rows);
         res.json(rows);
     });
 });
