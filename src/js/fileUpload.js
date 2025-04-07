@@ -36,7 +36,6 @@ export function updateFileName(input) {
         // Adiciona tratamento de erro para o áudio
         audioElement.onerror = (e) => {
             console.error('Erro ao carregar o áudio:', e);
-            alert('Erro ao carregar o áudio. Por favor, tente novamente.');
         };
 
         // Adiciona evento de carregamento do áudio

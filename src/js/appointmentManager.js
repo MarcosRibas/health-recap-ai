@@ -97,14 +97,16 @@ export function AppointmentForm() {
                         <span>Finalizar consulta</span>
                     </button>
 
+                    <!-- Upload de arquivo -->
                     <label class="flex-1">
                         <input type="file" 
-                               accept="audio/*" 
+                               accept="audio/*,.txt" 
                                class="hidden" 
-                               id="fileUpload">
+                               id="fileUpload"
+                               multiple>
                         <div class="w-full py-3 px-4 bg-gray-600 text-white rounded-lg hover:bg-gray-700 flex items-center justify-center space-x-2 cursor-pointer">
                             <i class="ph ph-upload-simple text-xl text-white"></i>
-                            <span id="uploadText" class="text-white" style="color: white;">Subir Gravação</span>
+                            <span id="uploadText" class="text-white">Subir Arquivo</span>
                         </div>
                     </label>
                 </div>
@@ -259,7 +261,7 @@ function writeString(view, offset, string) {
 }
 
 // Função para enviar os dados da consulta para o servidor
-export async function saveAppointment(audioBlob, audioFileName) {
+export async function saveAppointment(audioBlob, audioFileName, textContent = null) {
     try {
         // Obtém os valores do formulário
         const templateSelect = document.querySelector('select');
@@ -276,7 +278,8 @@ export async function saveAppointment(audioBlob, audioFileName) {
             template_type: templateSelect.value,
             patient_context: patientContext.value,
             audio_file: base64Audio,
-            audio_filename: audioFileName
+            audio_filename: audioFileName,
+            text_content: textContent // Novo campo para conteúdo do arquivo de texto
         };
         
         // Envia os dados para o servidor
@@ -349,11 +352,22 @@ export function AppointmentView(appointment) {
 
                 <div class="space-y-2">
                     <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Áudio da Consulta</h3>
-                    <audio controls class="w-full">
-                        <source src="data:audio/wav;base64,${appointment.audio_file}" type="audio/wav">
-                        Seu navegador não suporta o elemento de áudio.
-                    </audio>
+                    ${appointment.audio_file && appointment.audio_file !== 'data:audio/wav;base64,' ? `
+                        <audio controls class="w-full">
+                            <source src="data:audio/wav;base64,${appointment.audio_file}" type="audio/wav">
+                            Seu navegador não suporta o elemento de áudio.
+                        </audio>
+                    ` : '<p class="text-gray-500 dark:text-gray-400">Nenhum áudio disponível</p>'}
                 </div>
+
+                ${appointment.text_content ? `
+                    <div class="space-y-2">
+                        <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Conteúdo do Arquivo de Texto</h3>
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                            <pre class="text-sm text-gray-600 dark:text-gray-300 whitespace-pre-wrap">${appointment.text_content}</pre>
+                        </div>
+                    </div>
+                ` : ''}
 
                 ${appointment.transcription ? `
                     <div class="space-y-2">
@@ -549,4 +563,48 @@ export async function loadAppointment(id) {
             `;
         }
     }
+}
+
+// Função para ler o conteúdo do arquivo de texto
+function readTextFile(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (e) => resolve(e.target.result);
+        reader.onerror = (e) => reject(e);
+        reader.readAsText(file);
+    });
+}
+
+// Função para inicializar os eventos de upload de arquivo
+export function initializeFileUploadEvents() {
+    const fileInput = document.getElementById('fileUpload');
+    const uploadText = document.getElementById('uploadText');
+
+    fileInput.addEventListener('change', async (event) => {
+        const files = Array.from(event.target.files);
+        if (files.length > 0) {
+            uploadText.textContent = `${files.length} arquivo(s) selecionado(s)`;
+
+            let audioFile = files.find(f => f.type.startsWith('audio/'));
+            let textFile = files.find(f => f.name.endsWith('.txt'));
+
+            try {
+                let textContent = null;
+                if (textFile) {
+                    textContent = await readTextFile(textFile);
+                }
+
+                if (audioFile) {
+                    await saveAppointment(audioFile, audioFile.name, textContent);
+                } else if (textContent) {
+                    // Se não houver áudio, mas houver texto
+                    const emptyBlob = new Blob([], { type: 'audio/wav' });
+                    await saveAppointment(emptyBlob, 'no-audio.wav', textContent);
+                }
+            } catch (error) {
+                console.error('Erro ao processar arquivos:', error);
+                alert('Erro ao processar arquivos');
+            }
+        }
+    });
 } 
