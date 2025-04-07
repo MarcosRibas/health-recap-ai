@@ -97,9 +97,9 @@ function applyTheme(theme) {
     // Atualiza select de áudio
     const audioSelect = document.getElementById('audioDevices');
     if (audioSelect) {
-        // Remove a classe de texto do tema oposto
-        audioSelect.classList.remove(oppositeClasses.text);
-        audioSelect.className = `flex-1 bg-transparent border-0 focus:ring-0 truncate text-ellipsis ${classes.text}`;
+        // Remove classes do tema oposto
+        audioSelect.classList.remove(...oppositeClasses.input.split(' '));
+        audioSelect.className = `flex-1 bg-transparent border-0 focus:ring-0 truncate text-ellipsis ${classes.text} dark:[&>option]:text-white dark:[&>option]:bg-neutral-700`;
     }
 
     // Atualiza os botões

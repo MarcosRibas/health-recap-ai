@@ -69,7 +69,7 @@ export function AppointmentForm() {
                                     </button>
                                     <div id="preRecordingVolumeBars" class="volume-bars-container flex items-center space-x-0.5 h-4"></div>
                                 </div>
-                                <select id="audioDevices" class="flex-1 bg-transparent border-0 focus:ring-0 truncate text-ellipsis dark:text-gray-200 dark:[&>option]:bg-gray-700 dark:[&>option]:text-gray-200">
+                                <select id="audioDevices" class="flex-1 bg-transparent border-0 focus:ring-0 truncate text-ellipsis dark:text-gray-200 dark:[&>option]:text-white dark:[&>option]:bg-gray-700">
                                     <option>Selecione um microfone...</option>
                                 </select>
                             </div>
@@ -106,7 +106,7 @@ export function AppointmentForm() {
                                multiple>
                         <div class="w-full py-3 px-4 bg-gray-600 text-white rounded-lg hover:bg-gray-700 flex items-center justify-center space-x-2 cursor-pointer">
                             <i class="ph ph-upload-simple text-xl text-white"></i>
-                            <span id="uploadText" class="text-white">Subir Arquivo</span>
+                            <span id="uploadText" class="text-white" style="color: white;">Subir Arquivo</span>
                         </div>
                     </label>
                 </div>

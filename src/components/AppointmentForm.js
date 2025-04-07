@@ -65,7 +65,7 @@ export default async function AppointmentForm() {
                                     </button>
                                     <div id="preRecordingVolumeBars" class="volume-bars-container flex items-center space-x-0.5 h-4"></div>
                                 </div>
-                                <select id="audioDevices" class="flex-1 bg-transparent border-0 focus:ring-0 truncate text-ellipsis dark:text-gray-200 dark:[&>option]:bg-gray-700 dark:[&>option]:text-gray-200">
+                                <select id="audioDevices" class="flex-1 bg-transparent border-0 focus:ring-0 truncate text-ellipsis dark:text-gray-200 dark:[&>option]:text-white dark:[&>option]:bg-neutral-700">
                                     <option>Selecione um microfone...</option>
                                 </select>
                             </div>
