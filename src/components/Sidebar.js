@@ -94,19 +94,7 @@ export function createSidebar() {
 
     // Adiciona evento para o botão de nova consulta
     sidebar.querySelector('#newAppointmentBtn').addEventListener('click', () => {
-        // Limpa o formulário
-        const appElement = document.getElementById('app');
-        if (appElement) {
-            appElement.innerHTML = AppointmentForm();
-        }
-
-        // Remove o ID da URL
-        const url = new URL(window.location.href);
-        url.searchParams.delete('id');
-        window.history.pushState({}, '', url);
-
-        // Reinicializa os eventos do formulário
-        initializeFormEvents();
+        window.location.href = '/';
     });
 
     // Carrega as consultas inicialmente
