@@ -355,6 +355,15 @@ export function AppointmentView(appointment) {
                     </audio>
                 </div>
 
+                <div class="space-y-2">
+                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Resposta do n8n</h3>
+                    <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                        <div class="prose dark:prose-invert max-w-none">
+                            ${appointment.analysis ? appointment.analysis.replace(/^["']|["']$/g, '').replace(/\\n/g, '<br>').replace(/\\"/g, '"').replace(/^deu certo$/g, 'Análise concluída com sucesso') : 'Nenhuma resposta disponível'}
+                        </div>
+                    </div>
+                </div>
+
                 ${appointment.transcription ? `
                     <div class="space-y-2">
                         <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Transcrição</h3>
@@ -375,9 +384,40 @@ export function AppointmentView(appointment) {
     `;
 }
 
+// Função para limpar marcadores Markdown e tags HTML
+function cleanMarkdownAndHtml(text) {
+    // Remove marcadores de código Markdown
+    text = text.replace(/```[a-z]*\n/g, '').replace(/```/g, '');
+    return text;
+}
+
+// Função para decodificar string HTML com escape
+function decodeHtml(html) {
+    const txt = document.createElement('textarea');
+    txt.innerHTML = html;
+    return txt.value;
+}
+
 // Função para carregar uma consulta específica
 export async function loadAppointment(id) {
     try {
+        const appElement = document.getElementById('app');
+        if (!appElement) {
+            throw new Error('Elemento app não encontrado');
+        }
+
+        // Exibe tela de carregamento
+        appElement.innerHTML = `
+            <div class="bg-white dark:bg-gray-800 form-container rounded-lg shadow-md p-6 mx-auto">
+                <div class="flex flex-col items-center justify-center space-y-4">
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                    <p class="text-gray-700 dark:text-gray-200">Carregando consulta e realizando análise...</p>
+                </div>
+            </div>
+        `;
+
+        // Carrega os dados da consulta
+        console.log('Buscando dados da consulta...');
         const response = await fetch(`/api/appointments/${id}`);
         
         if (!response.ok) {
@@ -385,14 +425,99 @@ export async function loadAppointment(id) {
         }
 
         const appointment = await response.json();
+        console.log('Dados da consulta recebidos:', appointment);
 
-        const appElement = document.getElementById('app');
-        if (!appElement) {
-            throw new Error('Elemento app não encontrado');
+        // Prepara o FormData para enviar ao n8n
+        console.log('Preparando áudio para análise...');
+        const formData = new FormData();
+        const audioBlob = await fetch(`data:audio/wav;base64,${appointment.audio_file}`).then(r => r.blob());
+        formData.append('arquivo', audioBlob, 'audio.wav');
+
+        // Faz a chamada para o n8n
+        console.log('Enviando áudio para análise no n8n...');
+        const n8nResponse = await fetch('https://n8n.robotrock.ai/webhook/health-recap-ai', {
+            method: 'POST',
+            body: formData
+        });
+
+        console.log('Resposta do n8n recebida:', n8nResponse.status);
+
+        if (!n8nResponse.ok) {
+            throw new Error(`Erro ao analisar consulta no n8n: ${n8nResponse.status} ${n8nResponse.statusText}`);
         }
 
-        // Renderiza a visualização da consulta
-        appElement.innerHTML = AppointmentView(appointment);
+        const n8nData = await n8nResponse.json();
+        console.log('Dados brutos da análise recebidos:', n8nData);
+        
+        // Adiciona a análise ao objeto appointment usando a mesma lógica da outra plataforma
+        if (Array.isArray(n8nData) && n8nData.length > 0) {
+            console.log('Primeiro item da resposta:', n8nData[0]);
+            console.log('Output do primeiro item:', n8nData[0].output);
+            
+            // Remove as aspas extras e caracteres de escape
+            let analysisText = n8nData[0].output
+                .replace(/^["']|["']$/g, '') // Remove aspas no início e fim
+                .replace(/\\n/g, '\n') // Substitui \n por quebra de linha real
+                .replace(/\\"/g, '"'); // Substitui \" por "
+            
+            appointment.analysis = analysisText;
+        } else {
+            console.log('Resposta não está no formato esperado:', n8nData);
+            appointment.analysis = 'Nenhuma análise disponível.';
+        }
+
+        console.log('Análise final que será exibida:', appointment.analysis);
+
+        // Tenta renderizar a visualização com tratamento de erro
+        console.log('Iniciando renderização...');
+        try {
+            const htmlContent = AppointmentView(appointment);
+            console.log('HTML gerado com sucesso');
+            appElement.innerHTML = htmlContent;
+            console.log('HTML inserido no DOM');
+
+            // Verifica se o conteúdo está visível
+            const mainElement = appElement.querySelector('main');
+            if (mainElement) {
+                console.log('Dimensões do elemento main:', {
+                    offsetWidth: mainElement.offsetWidth,
+                    offsetHeight: mainElement.offsetHeight,
+                    clientWidth: mainElement.clientWidth,
+                    clientHeight: mainElement.clientHeight
+                });
+            }
+
+            // Força um reflow
+            appElement.style.display = 'none';
+            appElement.offsetHeight; // Força um reflow
+            appElement.style.display = '';
+
+        } catch (renderError) {
+            console.error('Erro durante a renderização:', renderError);
+            appElement.innerHTML = `
+                <div class="bg-white dark:bg-gray-800 form-container rounded-lg shadow-md p-6 mx-auto">
+                    <div class="text-center">
+                        <h2 class="text-xl font-semibold text-red-600 dark:text-red-400 mb-4">
+                            Erro ao renderizar consulta
+                        </h2>
+                        <p class="text-gray-600 dark:text-gray-300 mb-6">
+                            ${renderError.message}
+                        </p>
+                        <div class="mt-4 p-4 bg-gray-100 dark:bg-gray-700 rounded text-left">
+                            <pre class="text-sm text-gray-600 dark:text-gray-300">
+                                Dados da análise: ${JSON.stringify(appointment.analysis, null, 2)}
+                            </pre>
+                        </div>
+                        <div class="space-y-4 mt-4">
+                            <button onclick="window.location.reload()" 
+                                    class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark">
+                                Tentar novamente
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
 
         // Abre a sidebar automaticamente
         const sidebar = document.getElementById('sidebar');
@@ -404,23 +529,27 @@ export async function loadAppointment(id) {
         }
 
     } catch (error) {
-        console.error('Erro ao carregar consulta:', error);
+        console.error('Erro detalhado:', error);
         const appElement = document.getElementById('app');
         if (appElement) {
             appElement.innerHTML = `
                 <div class="bg-white dark:bg-gray-800 form-container rounded-lg shadow-md p-6 mx-auto">
                     <div class="text-center">
                         <h2 class="text-xl font-semibold text-red-600 dark:text-red-400 mb-4">
-                            Erro ao carregar consulta
+                            Erro ao processar consulta
                         </h2>
                         <p class="text-gray-600 dark:text-gray-300 mb-6">
                             ${error.message}
                         </p>
+                        <div class="space-y-4">
+                            <button onclick="window.location.reload()" 
+                                    class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark">
+                                Tentar novamente
+                            </button>
+                        </div>
                     </div>
                 </div>
             `;
-        } else {
-            alert('Erro ao carregar consulta. Por favor, tente novamente.');
         }
     }
 } 
