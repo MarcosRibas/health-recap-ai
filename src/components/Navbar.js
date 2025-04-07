@@ -4,7 +4,7 @@ export function createNavbar() {
     
     navbar.innerHTML = `
         <div class="w-full px-6 h-16 flex items-center justify-between">
-            <div class="text-primary font-semibold text-xl">Health Recap AI</div>
+            <div class="text-primary font-semibold text-xl">Fares AI</div>
             <div class="flex items-center space-x-2">
                 <button type="button" 
                         class="p-2 text-gray-500 hover:text-primary rounded-full" 

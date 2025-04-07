@@ -1,4 +1,4 @@
-# Health Recap AI
+# Fares AI
 
 Projeto de acompanhamento de saúde utilizando HTML, CSS, Tailwind e SQLite.
 
