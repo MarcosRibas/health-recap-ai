@@ -338,7 +338,7 @@ export function AppointmentView(appointment) {
     });
 
     return `
-        <main class="bg-white dark:bg-gray-800 form-container rounded-lg shadow-md p-6 mx-auto">
+        <main class="bg-white dark:bg-neutral-800 form-container rounded-lg shadow-md p-6 mx-auto">
             <div class="space-y-6">
                 <div class="flex justify-between items-center">
                     <h2 class="text-2xl font-bold text-gray-900 dark:text-white">${appointment.template_type}</h2>
@@ -386,7 +386,7 @@ export function AppointmentView(appointment) {
                 ` : ''}
             </div>
         </main>
-        <main class="bg-white dark:bg-gray-800 form-container rounded-lg shadow-md p-6 mx-auto mt-6">
+        <main class="bg-white dark:bg-neutral-800 form-container rounded-lg shadow-md p-6 mx-auto mt-6">
             <div class="space-y-2">
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Análise da consulta</h2>                     
                 ${appointment.analysis ? appointment.analysis.replace(/^["']|["']$/g, '').replace(/\\n/g, '<br>').replace(/\\"/g, '"').replace(/^deu certo$/g, 'Análise concluída com sucesso') : 'Nenhuma resposta disponível'} 
@@ -419,7 +419,7 @@ export async function loadAppointment(id) {
 
         // Exibe tela de carregamento
         appElement.innerHTML = `
-            <div class="bg-white dark:bg-gray-800 form-container rounded-lg shadow-md p-6 mx-auto">
+            <div class="bg-white dark:bg-neutral-800 form-container rounded-lg shadow-md p-6 mx-auto">
                 <div class="flex flex-col items-center justify-center space-y-4">
                     <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
                     <p class="text-gray-700 dark:text-gray-200">Carregando consulta e realizando análise...</p>
@@ -506,7 +506,7 @@ export async function loadAppointment(id) {
         } catch (renderError) {
             console.error('Erro durante a renderização:', renderError);
             appElement.innerHTML = `
-                <div class="bg-white dark:bg-gray-800 form-container rounded-lg shadow-md p-6 mx-auto">
+                <div class="bg-white dark:bg-neutral-800 form-container rounded-lg shadow-md p-6 mx-auto">
                     <div class="text-center">
                         <h2 class="text-xl font-semibold text-red-600 dark:text-red-400 mb-4">
                             Erro ao renderizar consulta
@@ -544,7 +544,7 @@ export async function loadAppointment(id) {
         const appElement = document.getElementById('app');
         if (appElement) {
             appElement.innerHTML = `
-                <div class="bg-white dark:bg-gray-800 form-container rounded-lg shadow-md p-6 mx-auto">
+                <div class="bg-white dark:bg-neutral-800 form-container rounded-lg shadow-md p-6 mx-auto">
                     <div class="text-center">
                         <h2 class="text-xl font-semibold text-red-600 dark:text-red-400 mb-4">
                             Erro ao processar consulta
