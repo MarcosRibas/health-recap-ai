@@ -446,7 +446,7 @@ export async function loadAppointment(id) {
 
         // Faz a chamada para o n8n
         console.log('Enviando áudio para análise no n8n...');
-        const n8nResponse = await fetch('https://n8n.robotrock.ai/webhook/health-recap-ai', {
+        const n8nResponse = await fetch('https://n8n.robotrock.ai/webhook/fares-ai', {
             method: 'POST',
             body: formData
         });
