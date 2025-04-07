@@ -355,15 +355,6 @@ export function AppointmentView(appointment) {
                     </audio>
                 </div>
 
-                <div class="space-y-2">
-                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Resposta do n8n</h3>
-                    <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                        <div class="prose dark:prose-invert max-w-none">
-                            ${appointment.analysis ? appointment.analysis.replace(/^["']|["']$/g, '').replace(/\\n/g, '<br>').replace(/\\"/g, '"').replace(/^deu certo$/g, 'Análise concluída com sucesso') : 'Nenhuma resposta disponível'}
-                        </div>
-                    </div>
-                </div>
-
                 ${appointment.transcription ? `
                     <div class="space-y-2">
                         <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Transcrição</h3>
@@ -381,6 +372,12 @@ export function AppointmentView(appointment) {
                 ` : ''}
             </div>
         </main>
+        <main class="bg-white dark:bg-gray-800 form-container rounded-lg shadow-md p-6 mx-auto mt-6">
+            <div class="space-y-2">
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Análise da consulta</h2>                     
+                ${appointment.analysis ? appointment.analysis.replace(/^["']|["']$/g, '').replace(/\\n/g, '<br>').replace(/\\"/g, '"').replace(/^deu certo$/g, 'Análise concluída com sucesso') : 'Nenhuma resposta disponível'} 
+            </div>
+        </main>        
     `;
 }
 
