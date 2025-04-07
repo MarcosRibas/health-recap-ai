@@ -1,4 +1,4 @@
-import { saveAppointment } from './appointmentManager.js';
+import { saveAppointment, generateDocument } from './appointmentManager.js';
 
 // Função para atualizar o nome do arquivo selecionado e exibir o áudio
 export function updateFileName(input) {
@@ -90,11 +90,27 @@ export function updateFileName(input) {
                 </button>
             `;
 
-            // Adiciona o evento de clique para salvar a consulta
+            // Adiciona o evento de clique para gerar o documento
             const generateButton = uploadLabel.querySelector('button');
             if (generateButton) {
-                generateButton.onclick = () => {
-                    saveAppointment(file, fileName);
+                generateButton.onclick = async () => {
+                    try {
+                        // Primeiro salva a consulta
+                        const response = await saveAppointment(file, fileName);
+                        console.log('Resposta do saveAppointment:', response);
+                        
+                        // Verifica se a resposta tem o ID
+                        if (response && response.id) {
+                            console.log('ID da consulta obtido:', response.id);
+                            await generateDocument(response.id);
+                        } else {
+                            console.error('Resposta sem ID:', response);
+                            throw new Error('Não foi possível obter o ID da consulta após salvar. Resposta:', JSON.stringify(response));
+                        }
+                    } catch (error) {
+                        console.error('Erro ao gerar documento:', error);
+                        alert('Erro ao gerar documento: ' + error.message);
+                    }
                 };
             }
         }
@@ -118,4 +134,4 @@ export function updateFileName(input) {
             `;
         }
     }
-} 
+}

@@ -305,9 +305,13 @@ export async function saveAppointment(audioBlob, audioFileName, textContent = nu
         // Carrega a visualização da consulta recém-criada
         await loadAppointment(result.id);
         
+        // Retorna o resultado para que o ID possa ser usado
+        return result;
+        
     } catch (error) {
         console.error('Erro ao salvar consulta:', error);
         alert(`Erro ao salvar consulta: ${error.message}`);
+        throw error; // Re-lança o erro para ser tratado pelo chamador
     }
 }
 
@@ -389,7 +393,7 @@ export function AppointmentView(appointment) {
         <main class="bg-white dark:bg-neutral-800 form-container rounded-lg shadow-md p-6 mx-auto mt-6">
             <div class="space-y-2">
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Análise da consulta</h2>                     
-                ${appointment.analysis ? appointment.analysis.replace(/^["']|["']$/g, '').replace(/\\n/g, '<br>').replace(/\\"/g, '"').replace(/^deu certo$/g, 'Análise concluída com sucesso') : 'Nenhuma resposta disponível'} 
+                ${appointment.analysis ? appointment.analysis.replace(/^["']|["']$/g, '').replace(/\\n/g, '<br>').replace(/\\"/g, '"').replace(/^deu certo$/g, 'Análise concluída com sucesso') : 'Nenhuma análise disponível.'} 
             </div>
         </main>        
     `;
@@ -412,6 +416,11 @@ function decodeHtml(html) {
 // Função para carregar uma consulta específica
 export async function loadAppointment(id) {
     try {
+        // Adiciona o ID da consulta à URL
+        const url = new URL(window.location.href);
+        url.searchParams.set('id', id);
+        window.history.pushState({}, '', url);
+        
         const appElement = document.getElementById('app');
         if (!appElement) {
             throw new Error('Elemento app não encontrado');
@@ -422,7 +431,117 @@ export async function loadAppointment(id) {
             <div class="bg-white dark:bg-neutral-800 form-container rounded-lg shadow-md p-6 mx-auto">
                 <div class="flex flex-col items-center justify-center space-y-4">
                     <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-                    <p class="text-gray-700 dark:text-gray-200">Carregando consulta e realizando análise...</p>
+                    <p class="text-gray-700 dark:text-gray-200">Carregando consulta...</p>
+                </div>
+            </div>
+        `;
+
+        // Carrega os dados da consulta
+        console.log('Buscando dados da consulta...');
+        const response = await fetch(`/api/appointments/${id}`);
+        
+        if (!response.ok) {
+            throw new Error(`Erro ao carregar consulta: ${response.status} ${response.statusText}`);
+        }
+
+        const appointment = await response.json();
+        console.log('Dados da consulta recebidos:', appointment);
+
+        // Tenta renderizar a visualização com tratamento de erro
+        console.log('Iniciando renderização...');
+        try {
+            const htmlContent = AppointmentView(appointment);
+            console.log('HTML gerado com sucesso');
+            appElement.innerHTML = htmlContent;
+            console.log('HTML inserido no DOM');
+
+            // Verifica se o conteúdo está visível
+            const mainElement = appElement.querySelector('main');
+            if (mainElement) {
+                console.log('Dimensões do elemento main:', {
+                    offsetWidth: mainElement.offsetWidth,
+                    offsetHeight: mainElement.offsetHeight,
+                    clientWidth: mainElement.clientWidth,
+                    clientHeight: mainElement.clientHeight
+                });
+            }
+
+            // Força um reflow
+            appElement.style.display = 'none';
+            appElement.offsetHeight; // Força um reflow
+            appElement.style.display = '';
+
+        } catch (renderError) {
+            console.error('Erro durante a renderização:', renderError);
+            appElement.innerHTML = `
+                <div class="bg-white dark:bg-neutral-800 form-container rounded-lg shadow-md p-6 mx-auto">
+                    <div class="text-center">
+                        <h2 class="text-xl font-semibold text-red-600 dark:text-red-400 mb-4">
+                            Erro ao renderizar consulta
+                        </h2>
+                        <p class="text-gray-600 dark:text-gray-300 mb-6">
+                            ${renderError.message}
+                        </p>
+                        <div class="space-y-4 mt-4">
+                            <button onclick="window.location.reload()" 
+                                    class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark">
+                                Tentar novamente
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Abre a sidebar automaticamente
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.querySelector('.main-content');
+        if (sidebar && mainContent) {
+            sidebar.classList.remove('-translate-x-full');
+            mainContent.classList.remove('ml-0');
+            mainContent.classList.add('ml-64');
+        }
+
+    } catch (error) {
+        console.error('Erro detalhado:', error);
+        const appElement = document.getElementById('app');
+        if (appElement) {
+            appElement.innerHTML = `
+                <div class="bg-white dark:bg-neutral-800 form-container rounded-lg shadow-md p-6 mx-auto">
+                    <div class="text-center">
+                        <h2 class="text-xl font-semibold text-red-600 dark:text-red-400 mb-4">
+                            Erro ao processar consulta
+                        </h2>
+                        <p class="text-gray-600 dark:text-gray-300 mb-6">
+                            ${error.message}
+                        </p>
+                        <div class="space-y-4">
+                            <button onclick="window.location.reload()" 
+                                    class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark">
+                                Tentar novamente
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+    }
+}
+
+// Função para gerar documento a partir da consulta
+export async function generateDocument(id) {
+    try {
+        const appElement = document.getElementById('app');
+        if (!appElement) {
+            throw new Error('Elemento app não encontrado');
+        }
+
+        // Exibe tela de carregamento
+        appElement.innerHTML = `
+            <div class="bg-white dark:bg-neutral-800 form-container rounded-lg shadow-md p-6 mx-auto">
+                <div class="flex flex-col items-center justify-center space-y-4">
+                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+                    <p class="text-gray-700 dark:text-gray-200">Gerando documento e realizando análise...</p>
                 </div>
             </div>
         `;
@@ -530,15 +649,6 @@ export async function loadAppointment(id) {
             `;
         }
 
-        // Abre a sidebar automaticamente
-        const sidebar = document.getElementById('sidebar');
-        const mainContent = document.querySelector('.main-content');
-        if (sidebar && mainContent) {
-            sidebar.classList.remove('-translate-x-full');
-            mainContent.classList.remove('ml-0');
-            mainContent.classList.add('ml-64');
-        }
-
     } catch (error) {
         console.error('Erro detalhado:', error);
         const appElement = document.getElementById('app');
@@ -547,7 +657,7 @@ export async function loadAppointment(id) {
                 <div class="bg-white dark:bg-neutral-800 form-container rounded-lg shadow-md p-6 mx-auto">
                     <div class="text-center">
                         <h2 class="text-xl font-semibold text-red-600 dark:text-red-400 mb-4">
-                            Erro ao processar consulta
+                            Erro ao gerar documento
                         </h2>
                         <p class="text-gray-600 dark:text-gray-300 mb-6">
                             ${error.message}
