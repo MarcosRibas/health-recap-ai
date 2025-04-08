@@ -25,23 +25,33 @@ export function createSidebar() {
             
             <!-- Informações do Paciente -->
             <div class="space-y-2">
-                <button class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-neutral-700 transition-colors duration-200 rounded-lg">
+                <button 
+                    class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-neutral-700 transition-colors duration-200 rounded-lg"
+                    onclick="const el = document.getElementById('patient-info'); if(el) { const navbarHeight = 64; const padding = 16; window.scrollTo({top: el.offsetTop - navbarHeight - padding, behavior: 'smooth'});}">
                     Paciente
                 </button>
 
-                <button class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-neutral-700 transition-colors duration-200 rounded-lg">
+                <button 
+                    class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-neutral-700 transition-colors duration-200 rounded-lg"
+                    onclick="const el = document.getElementById('anamnese'); if(el) { const navbarHeight = 64; const padding = 16; window.scrollTo({top: el.offsetTop - navbarHeight - padding, behavior: 'smooth'});}">
                     Anamnese
                 </button>
 
-                <button class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-neutral-700 transition-colors duration-200 rounded-lg">
+                <button 
+                    class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-neutral-700 transition-colors duration-200 rounded-lg"
+                    onclick="const el = document.getElementById('conduct-code'); if(el) { const navbarHeight = 64; const padding = 16; window.scrollTo({top: el.offsetTop - navbarHeight - padding, behavior: 'smooth'});}">
                     Alinhamento com Código de Conduta
                 </button>
 
-                <button class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-neutral-700 transition-colors duration-200 rounded-lg">
+                <button 
+                    class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-neutral-700 transition-colors duration-200 rounded-lg"
+                    onclick="const el = document.getElementById('suggested-exams'); if(el) { const navbarHeight = 64; const padding = 16; window.scrollTo({top: el.offsetTop - navbarHeight - padding, behavior: 'smooth'});}">
                     Sugestão de Exames
                 </button>
 
-                <button class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-neutral-700 transition-colors duration-200 rounded-lg">
+                <button 
+                    class="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-neutral-700 transition-colors duration-200 rounded-lg"
+                    onclick="const el = document.getElementById('preliminary-diagnosis'); if(el) { const navbarHeight = 64; const padding = 16; window.scrollTo({top: el.offsetTop - navbarHeight - padding, behavior: 'smooth'});}">
                     Diagnóstico
                 </button>
             </div>

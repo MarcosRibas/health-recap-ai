@@ -365,7 +365,7 @@ export function AppointmentView(appointment) {
                     ` : '<p class="text-gray-500 dark:text-gray-400">Nenhum áudio disponível</p>'}
                 </div>
 
-                <div class="space-y-2">
+                <div class="space-y-2" id="patient-info">
                     <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Informações do Paciente</h3>
                     <div class="bg-neutral-100 dark:bg-neutral-700 p-4 rounded-lg">
                         <div class="grid grid-cols-2 gap-4">
@@ -381,7 +381,7 @@ export function AppointmentView(appointment) {
                     </div>
                 </div>
 
-                <div class="space-y-2">
+                <div class="space-y-2" id="anamnese">
                     <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Anamnese</h3>
                     <div class="bg-neutral-100 dark:bg-neutral-700 p-4 rounded-lg">
                         <h4 class="font-medium text-gray-700 dark:text-gray-200">Principais Sintomas:</h4>
@@ -393,14 +393,14 @@ export function AppointmentView(appointment) {
                     </div>
                 </div>
 
-                <div class="space-y-2">
+                <div class="space-y-2" id="conduct-code">
                     <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Alinhamento com Código de Conduta</h3>
                     <div class="bg-neutral-100 dark:bg-neutral-700 p-4 rounded-lg">
                         <p class="text-gray-600 dark:text-gray-300">As informações são tratadas com confidencialidade máxima. O diagnóstico proposto é preliminar e não substitui uma consulta médica formal.</p>
                     </div>
                 </div>
 
-                <div class="space-y-2">
+                <div class="space-y-2" id="suggested-exams">
                     <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Exames Sugeridos</h3>
                     <div class="bg-neutral-100 dark:bg-neutral-700 p-4 rounded-lg">
                         <ul class="list-disc pl-5 text-gray-600 dark:text-gray-300">
@@ -409,7 +409,7 @@ export function AppointmentView(appointment) {
                     </div>
                 </div>
 
-                <div class="space-y-2">
+                <div class="space-y-2" id="additional-questions">
                     <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Perguntas Adicionais</h3>
                     <div class="bg-neutral-100 dark:bg-neutral-700 p-4 rounded-lg">
                         <ul class="list-disc pl-5 text-gray-600 dark:text-gray-300">
@@ -419,7 +419,7 @@ export function AppointmentView(appointment) {
                     </div>
                 </div>
 
-                <div class="space-y-2">
+                <div class="space-y-2" id="preliminary-diagnosis">
                     <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Diagnóstico Preliminar</h3>
                     <div class="bg-neutral-100 dark:bg-neutral-700 p-4 rounded-lg">
                         <p class="text-gray-600 dark:text-gray-300">Possível sobrecarga na região lombar, agravada por movimentos de impacto relacionados à prática de crossfit. Necessário descartar condições como hérnia de disco ou lesão muscular mais séria.</p>
