@@ -5,13 +5,13 @@ import { createChat } from '../components/Chat.js';
 // Função para gerar o formulário
 export function AppointmentForm() {
     return `
-        <main class="bg-white dark:bg-gray-800 form-container rounded-lg shadow-md p-6 mx-auto">
+        <main class="bg-white dark:bg-dark-lighter form-container rounded-lg shadow-md p-6 mx-auto">
             <form class="space-y-6">
                 <div class="space-y-2">
-                    <label class="block text-gray-700 dark:text-gray-200">
+                    <label class="block text-gray-700 dark:text-dark-text-primary">
                         Modelo de documento
                         <div class="relative mt-2">
-                            <select class="block w-full py-2 px-4 border rounded-lg bg-white dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-primary">
+                            <select class="block w-full py-2 px-4 border rounded-lg bg-white dark:bg-dark-input dark:border-dark-border dark:text-dark-text-primary focus:ring-2 focus:ring-primary">
                                 <option>Anamnese padrão</option>
                                 <option>Cardiologia</option>
                                 <option>Cirurgia</option>
@@ -48,10 +48,10 @@ export function AppointmentForm() {
                 </div>
 
                 <div class="space-y-2">
-                    <label class="block text-gray-700 dark:text-gray-200">
+                    <label class="block text-gray-700 dark:text-dark-text-primary">
                         Contexto do paciente
                         <textarea
-                            class="mt-2 block w-full rounded-lg border p-4 text-gray-700 dark:text-white dark:bg-gray-700 placeholder-gray-400 focus:ring-2 focus:ring-primary"
+                            class="mt-2 block w-full rounded-lg border p-4 bg-white dark:bg-dark-input dark:border-dark-border dark:text-dark-text-primary placeholder-gray-400 dark:placeholder-dark-text-muted focus:ring-2 focus:ring-primary"
                             rows="4"
                             placeholder="Preencha este campo com informações clínicas do paciente: medicamentos, prontuários anteriores ou exames. Isso ajuda a fornecer um documento clínico mais completo."
                         ></textarea>
@@ -59,18 +59,18 @@ export function AppointmentForm() {
                 </div>
 
                 <div class="space-y-2">
-                    <label class="block text-gray-700 dark:text-gray-200">
+                    <label class="block text-gray-700 dark:text-dark-text-primary">
                         Gravação
-                        <div class="mt-2 flex items-center space-x-2 border dark:border-gray-600 rounded-lg p-4">
+                        <div class="mt-2 flex items-center space-x-2 border dark:border-dark-border rounded-lg p-4 bg-white dark:bg-dark-input">
                             <!-- Estado inicial - Seleção de microfone -->
                             <div id="preRecordingState" class="flex items-center space-x-2 w-full">
                                 <div class="flex items-center space-x-2">
-                                    <button type="button" class="p-2 text-gray-500 hover:text-primary">
+                                    <button type="button" class="p-2 text-gray-500 dark:text-dark-text-secondary hover:text-primary dark:hover:text-primary">
                                         <i class="ph ph-microphone text-2xl"></i>
                                     </button>
                                     <div id="preRecordingVolumeBars" class="volume-bars-container flex items-center space-x-0.5 h-4"></div>
                                 </div>
-                                <select id="audioDevices" class="flex-1 bg-transparent border-0 focus:ring-0 truncate text-ellipsis dark:text-gray-200 dark:[&>option]:text-white dark:[&>option]:bg-gray-700">
+                                <select id="audioDevices" class="flex-1 bg-transparent border-0 focus:ring-0 truncate text-ellipsis text-gray-700 dark:text-dark-text-primary dark:[&>option]:text-dark-text-primary dark:[&>option]:bg-dark-input">
                                     <option>Selecione um microfone...</option>
                                 </select>
                             </div>
@@ -107,7 +107,7 @@ export function AppointmentForm() {
                                multiple>
                         <div class="w-full py-3 px-4 bg-gray-600 text-white rounded-lg hover:bg-gray-700 flex items-center justify-center space-x-2 cursor-pointer">
                             <i class="ph ph-upload-simple text-xl text-white"></i>
-                            <span id="uploadText" class="text-white" style="color: white;">Subir Arquivo</span>
+                            <span id="uploadText" class="text-white">Subir Arquivo</span>
                         </div>
                     </label>
                 </div>
