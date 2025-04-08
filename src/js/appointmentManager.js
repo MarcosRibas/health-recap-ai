@@ -367,7 +367,7 @@ export function AppointmentView(appointment) {
 
                 <div class="space-y-2">
                     <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Informações do Paciente</h3>
-                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                    <div class="bg-neutral-100 dark:bg-neutral-700 p-4 rounded-lg">
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <p class="text-gray-600 dark:text-gray-300"><span class="font-medium">Médico:</span> Dr. Carlos</p>
@@ -383,7 +383,7 @@ export function AppointmentView(appointment) {
 
                 <div class="space-y-2">
                     <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Anamnese</h3>
-                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                    <div class="bg-neutral-100 dark:bg-neutral-700 p-4 rounded-lg">
                         <h4 class="font-medium text-gray-700 dark:text-gray-200">Principais Sintomas:</h4>
                         <ul class="list-disc pl-5 mt-2 text-gray-600 dark:text-gray-300">
                             <li>Dor nas costas, especialmente na parte inferior.</li>
@@ -395,14 +395,14 @@ export function AppointmentView(appointment) {
 
                 <div class="space-y-2">
                     <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Alinhamento com Código de Conduta</h3>
-                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                    <div class="bg-neutral-100 dark:bg-neutral-700 p-4 rounded-lg">
                         <p class="text-gray-600 dark:text-gray-300">As informações são tratadas com confidencialidade máxima. O diagnóstico proposto é preliminar e não substitui uma consulta médica formal.</p>
                     </div>
                 </div>
 
                 <div class="space-y-2">
                     <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Exames Sugeridos</h3>
-                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                    <div class="bg-neutral-100 dark:bg-neutral-700 p-4 rounded-lg">
                         <ul class="list-disc pl-5 text-gray-600 dark:text-gray-300">
                             <li>Ressonância magnética da região lombar.</li>
                         </ul>
@@ -411,7 +411,7 @@ export function AppointmentView(appointment) {
 
                 <div class="space-y-2">
                     <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Perguntas Adicionais</h3>
-                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                    <div class="bg-neutral-100 dark:bg-neutral-700 p-4 rounded-lg">
                         <ul class="list-disc pl-5 text-gray-600 dark:text-gray-300">
                             <li>Você notou alguma alteração na sua rotina de sono ou estresse elevado recentemente?</li>
                             <li>Você já consultou um fisioterapeuta ou especialista em dor lombar antes?</li>
@@ -421,11 +421,10 @@ export function AppointmentView(appointment) {
 
                 <div class="space-y-2">
                     <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Diagnóstico Preliminar</h3>
-                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                    <div class="bg-neutral-100 dark:bg-neutral-700 p-4 rounded-lg">
                         <p class="text-gray-600 dark:text-gray-300">Possível sobrecarga na região lombar, agravada por movimentos de impacto relacionados à prática de crossfit. Necessário descartar condições como hérnia de disco ou lesão muscular mais séria.</p>
                     </div>
                 </div>
-
 
                 ${appointment.text_content ? `
                     <div class="space-y-2">
