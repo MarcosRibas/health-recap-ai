@@ -6,6 +6,35 @@ export function createChat() {
     // Estado inicial do chat (minimizado)
     let isExpanded = false;
     
+    // Função para adicionar mensagem
+    function addMessage(message, isUser = false) {
+        const messagesContainer = chatContainer.querySelector('#chat-messages');
+        const messageHTML = isUser ? `
+            <div class="flex items-start justify-end space-x-2">
+                <div class="bg-primary text-white rounded-lg p-3 max-w-[80%]">
+                    <p>${message}</p>
+                </div>
+                <div class="w-8 h-8 rounded-full bg-gray-200 dark:bg-neutral-600 flex items-center justify-center">
+                    <i class="ph ph-user text-gray-600 dark:text-gray-200 text-lg"></i>
+                </div>
+            </div>
+        ` : `
+            <div class="flex items-start space-x-2">
+                <div class="flex items-start space-x-2">
+                    <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white">
+                        <i class="ph ph-robot text-lg"></i>
+                    </div>
+                    <div class="bg-gray-100 dark:bg-neutral-700 rounded-lg p-3 max-w-[80%]">
+                        <p class="text-gray-700 dark:text-gray-200">${message}</p>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        messagesContainer.insertAdjacentHTML('beforeend', messageHTML);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+    
     // HTML do chat
     chatContainer.innerHTML = `
         <div class="flex flex-col">
@@ -28,7 +57,7 @@ export function createChat() {
                 </div>
                 
                 <!-- Área de mensagens -->
-                <div class="flex-1 p-4 overflow-y-auto space-y-4">
+                <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-4">
                     <!-- Mensagem do assistente -->
                     <div class="flex items-start space-x-2">
                         <div class="flex items-start space-x-2">
@@ -40,30 +69,21 @@ export function createChat() {
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Mensagem do usuário -->
-                    <div class="flex items-start justify-end space-x-2">
-                        <div class="bg-primary text-white rounded-lg p-3 max-w-[80%]">
-                            <p>Quais são os principais sintomas do paciente?</p>
-                        </div>
-                        <div class="w-8 h-8 rounded-full bg-gray-200 dark:bg-neutral-600 flex items-center justify-center">
-                            <i class="ph ph-user text-gray-600 dark:text-gray-200 text-lg"></i>
-                        </div>
-                    </div>
                 </div>
                 
                 <!-- Área de input -->
                 <div class="p-4">
-                    <div class="flex space-x-2">
+                    <form id="chat-form" class="flex space-x-2">
                         <input 
                             type="text" 
+                            id="chat-input"
                             placeholder="Digite sua mensagem..." 
                             class="flex-1 px-4 py-2 rounded-lg bg-gray-100 dark:bg-neutral-700 border-none text-gray-700 dark:text-gray-200 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-primary"
                         >
-                        <button class="text-primary hover:text-primary-dark p-2 rounded-lg transition-colors duration-200">
+                        <button type="submit" class="text-primary hover:text-primary-dark p-2 rounded-lg transition-colors duration-200">
                             <i class="ph ph-paper-plane-right text-xl"></i>
                         </button>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -73,6 +93,8 @@ export function createChat() {
     const toggleButton = chatContainer.querySelector('#chat-toggle');
     const minimizeButton = chatContainer.querySelector('#chat-minimize');
     const expandedChat = chatContainer.querySelector('#chat-expanded');
+    const chatForm = chatContainer.querySelector('#chat-form');
+    const chatInput = chatContainer.querySelector('#chat-input');
     
     toggleButton.addEventListener('click', () => {
         isExpanded = !isExpanded;
@@ -84,6 +106,21 @@ export function createChat() {
         isExpanded = false;
         expandedChat.classList.add('hidden');
         toggleButton.classList.remove('hidden');
+    });
+
+    chatForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const message = chatInput.value.trim();
+        if (message) {
+            // Adiciona mensagem do usuário
+            addMessage(message, true);
+            chatInput.value = '';
+
+            // Simula resposta do assistente após 500ms
+            setTimeout(() => {
+                addMessage('Resposta padrão');
+            }, 500);
+        }
     });
     
     return chatContainer;
