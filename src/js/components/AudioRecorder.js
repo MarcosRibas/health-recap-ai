@@ -1,4 +1,4 @@
-import { saveAppointment } from '../appointmentManager.js';
+import { saveAppointment, generateDocument } from '../appointmentManager.js';
 
 export class AudioRecorder {
     constructor() {
@@ -151,9 +151,25 @@ export class AudioRecorder {
             // Adiciona o evento de clique para salvar a consulta
             const generateButton = uploadLabel.querySelector('button');
             if (generateButton) {
-                generateButton.onclick = () => {
-                    const fileName = `gravacao-${new Date().toISOString().slice(0,19).replace(/:/g, '-')}.wav`;
-                    saveAppointment(this.currentAudioBlob, fileName);
+                generateButton.onclick = async () => {
+                    try {
+                        const fileName = `gravacao-${new Date().toISOString().slice(0,19).replace(/:/g, '-')}.wav`;
+                        // Primeiro salva a consulta
+                        const response = await saveAppointment(this.currentAudioBlob, fileName);
+                        console.log('Resposta do saveAppointment:', response);
+                        
+                        // Verifica se a resposta tem o ID
+                        if (response && response.id) {
+                            console.log('ID da consulta obtido:', response.id);
+                            await generateDocument(response.id);
+                        } else {
+                            console.error('Resposta sem ID:', response);
+                            throw new Error('Não foi possível obter o ID da consulta após salvar. Resposta:', JSON.stringify(response));
+                        }
+                    } catch (error) {
+                        console.error('Erro ao gerar documento:', error);
+                        alert('Erro ao gerar documento: ' + error.message);
+                    }
                 };
             }
         }
