@@ -10,16 +10,21 @@ export function createChat() {
     chatContainer.innerHTML = `
         <div class="flex flex-col">
             <!-- Chat minimizado -->
-            <button id="chat-toggle" class="bg-primary hover:bg-primary-dark text-white p-4 rounded-full shadow-lg ml-auto transition-all duration-300">
+            <button id="chat-toggle" class="bg-primary hover:bg-primary-dark text-white w-12 h-12 rounded-full shadow-lg ml-auto transition-all duration-300 flex items-center justify-center">
                 <i class="ph ph-chat-circle-dots text-2xl"></i>
             </button>
             
             <!-- Chat expandido -->
             <div id="chat-expanded" class="hidden bg-white dark:bg-neutral-800 rounded-lg shadow-xl w-80 h-[32rem] mb-4 flex flex-col">
                 <!-- Cabeçalho -->
-                <div class="p-4 border-b border-gray-200 dark:border-neutral-700 flex flex-col">
-                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Assistente Virtual</h3>
-                    <p class="text-sm text-gray-500 dark:text-gray-400">Tire suas dúvidas sobre a consulta</p>
+                <div class="p-4 border-b border-gray-200 dark:border-neutral-700 flex justify-between items-center">
+                    <div>
+                        <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Assistente Virtual</h3>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">Tire suas dúvidas sobre a consulta</p>
+                    </div>
+                    <button id="chat-minimize" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 p-1">
+                        <i class="ph ph-minus-circle text-xl"></i>
+                    </button>
                 </div>
                 
                 <!-- Área de mensagens -->
