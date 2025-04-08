@@ -532,6 +532,19 @@ export async function loadAppointment(id) {
             // Adiciona o chat
             document.body.appendChild(createChat());
 
+            // Ativa a sidebar automaticamente
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.querySelector('.main-content');
+            
+            if (sidebar && mainContent) {
+                // Remove a classe que esconde a sidebar
+                sidebar.classList.remove('-translate-x-full');
+                
+                // Ajusta o conteúdo principal
+                mainContent.classList.remove('ml-0');
+                mainContent.classList.add('ml-64');
+            }
+
         } catch (renderError) {
             console.error('Erro durante a renderização:', renderError);
             appElement.innerHTML = `
@@ -698,6 +711,19 @@ export async function generateDocument(id) {
             
             // Adiciona o chat
             document.body.appendChild(createChat());
+            
+            // Ativa a sidebar automaticamente
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.querySelector('.main-content');
+            
+            if (sidebar && mainContent) {
+                // Remove a classe que esconde a sidebar
+                sidebar.classList.remove('-translate-x-full');
+                
+                // Ajusta o conteúdo principal
+                mainContent.classList.remove('ml-0');
+                mainContent.classList.add('ml-64');
+            }
         } catch (renderError) {
             console.error('Erro ao renderizar:', renderError);
             throw renderError;
