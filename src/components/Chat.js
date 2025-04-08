@@ -6,6 +6,33 @@ export function createChat() {
     // Estado inicial do chat (minimizado)
     let isExpanded = false;
     
+    // Variável para armazenar os dados da consulta atual
+    let currentAppointment = null;
+    
+    // Função para buscar dados da consulta atual
+    async function fetchCurrentAppointment() {
+        try {
+            const url = new URL(window.location.href);
+            const id = url.searchParams.get('id');
+            
+            if (!id) {
+                throw new Error('ID da consulta não encontrado');
+            }
+
+            const response = await fetch(`/api/appointments/${id}`);
+            if (!response.ok) {
+                throw new Error('Erro ao buscar dados da consulta');
+            }
+
+            const data = await response.json();
+            currentAppointment = data;
+            return data;
+        } catch (error) {
+            console.error('Erro ao buscar consulta:', error);
+            return null;
+        }
+    }
+    
     // Função para adicionar mensagem
     function addMessage(message, isUser = false) {
         const messagesContainer = chatContainer.querySelector('#chat-messages');
@@ -33,6 +60,70 @@ export function createChat() {
         
         messagesContainer.insertAdjacentHTML('beforeend', messageHTML);
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    // Função para enviar mensagem para o webhook
+    async function sendMessageToWebhook(message) {
+        try {
+            // Adiciona indicador de digitação
+            const messagesContainer = chatContainer.querySelector('#chat-messages');
+            const typingIndicator = document.createElement('div');
+            typingIndicator.id = 'typing-indicator';
+            typingIndicator.className = 'flex items-start space-x-2';
+            typingIndicator.innerHTML = `
+                <div class="flex items-start space-x-2">
+                    <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white">
+                        <i class="ph ph-robot text-lg"></i>
+                    </div>
+                    <div class="bg-gray-100 dark:bg-neutral-700 rounded-lg p-3">
+                        <div class="flex space-x-1">
+                            <div class="w-2 h-2 bg-gray-400 dark:bg-gray-500 rounded-full animate-bounce"></div>
+                            <div class="w-2 h-2 bg-gray-400 dark:bg-gray-500 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                            <div class="w-2 h-2 bg-gray-400 dark:bg-gray-500 rounded-full animate-bounce" style="animation-delay: 0.4s"></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            messagesContainer.appendChild(typingIndicator);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            // Se ainda não temos os dados da consulta, busca eles
+            if (!currentAppointment) {
+                await fetchCurrentAppointment();
+            }
+
+            // Prepara os dados para enviar ao webhook
+            const payload = {
+                message: message,
+                context: {
+                    template_type: currentAppointment?.template_type || '',
+                    patient_context: currentAppointment?.patient_context || '',
+                    transcription: currentAppointment?.transcription || '',
+                    analysis: currentAppointment?.analysis || {}
+                }
+            };
+
+            const response = await fetch('https://n8n.robotrock.ai/webhook/d0125513-afac-4f8d-bc69-9b036ac88d1e', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            // Remove o indicador de digitação
+            typingIndicator.remove();
+
+            const data = await response.json();
+
+            if (!data.output) {
+                throw new Error('Erro ao enviar mensagem');
+            }
+            return data.output || 'Desculpe, não consegui processar sua mensagem.';
+        } catch (error) {
+            console.error('Erro ao enviar mensagem:', error);
+            return 'Desculpe, ocorreu um erro ao processar sua mensagem. Por favor, tente novamente.';
+        }
     }
     
     // HTML do chat
@@ -123,6 +214,11 @@ export function createChat() {
         isExpanded = !isExpanded;
         expandedChat.classList.toggle('hidden');
         toggleButton.classList.toggle('hidden');
+
+        // Busca os dados da consulta quando o chat é aberto pela primeira vez
+        if (isExpanded && !currentAppointment) {
+            fetchCurrentAppointment();
+        }
     });
     
     minimizeButton?.addEventListener('click', () => {
@@ -133,18 +229,17 @@ export function createChat() {
 
     // Event listener para os botões de ação rápida
     quickActionButtons.forEach(button => {
-        button.addEventListener('click', () => {
+        button.addEventListener('click', async () => {
             const message = button.textContent.trim();
             addMessage(message, true);
             
-            // Simula resposta do assistente após 500ms
-            setTimeout(() => {
-                addMessage('Resposta padrão');
-            }, 500);
+            // Envia a mensagem para o webhook e exibe a resposta
+            const response = await sendMessageToWebhook(message);
+            addMessage(response);
         });
     });
 
-    chatForm.addEventListener('submit', (e) => {
+    chatForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const message = chatInput.value.trim();
         if (message) {
@@ -152,12 +247,14 @@ export function createChat() {
             addMessage(message, true);
             chatInput.value = '';
 
-            // Simula resposta do assistente após 500ms
-            setTimeout(() => {
-                addMessage('Resposta padrão');
-            }, 500);
+            // Envia a mensagem para o webhook e exibe a resposta
+            const response = await sendMessageToWebhook(message);
+            addMessage(response);
         }
     });
+
+    // Busca os dados da consulta assim que o componente é criado
+    fetchCurrentAppointment();
     
     return chatContainer;
 } 
