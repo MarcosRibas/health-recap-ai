@@ -68,7 +68,7 @@ aside {
 
 /* Estilo para as barras de volume ativas */
 .volume-bar.active {
-    background-color: #3b82f6;
+    background-color: #1A7F40;
 }
 
 /* Configurações do modo escuro */
@@ -82,7 +82,7 @@ aside {
     }
     
     .volume-bar.active {
-        background-color: #60a5c4; /* Versão mais clara da cor primária */
+        background-color: #2a9a52; /* Versão mais clara da cor primária */
     }
 }
 
@@ -93,22 +93,22 @@ aside {
 
 /* Estilos para botões primários */
 .bg-primary {
-    background-color: #4ea1c2;
+    background-color: #1A7F40;
 }
 
 .hover\:bg-primary-dark:hover {
-    background-color: #3a89a9;
+    background-color: #156634;
 }
 
 .text-primary {
-    color: #4ea1c2;
+    color: #1A7F40;
 }
 
 .hover\:text-primary:hover {
-    color: #3a89a9;
+    color: #156634;
 }
 
 .focus\:ring-primary:focus {
-    --tw-ring-color: #4ea1c2;
+    --tw-ring-color: #1A7F40;
     --tw-ring-opacity: 1;
 }
