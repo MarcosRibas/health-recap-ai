@@ -1,5 +1,6 @@
 // Importa a função initializeFormEvents
 import { initializeFormEvents } from '../main.js';
+import { createChat } from '../components/Chat.js';
 
 // Função para gerar o formulário
 export function AppointmentForm() {
@@ -478,6 +479,9 @@ function decodeHtml(html) {
 // Função para carregar uma consulta específica
 export async function loadAppointment(id) {
     try {
+        // Remove chat existente se houver
+        document.getElementById('chat-container')?.remove();
+        
         // Adiciona o ID da consulta à URL
         const url = new URL(window.location.href);
         url.searchParams.set('id', id);
@@ -516,6 +520,9 @@ export async function loadAppointment(id) {
             console.log('HTML gerado com sucesso');
             appElement.innerHTML = htmlContent;
             console.log('HTML inserido no DOM');
+
+            // Adiciona o chat
+            document.body.appendChild(createChat());
 
             // Verifica se o conteúdo está visível
             const mainElement = appElement.querySelector('main');
