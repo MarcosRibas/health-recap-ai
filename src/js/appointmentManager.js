@@ -366,64 +366,71 @@ export function AppointmentView(appointment) {
                     ` : '<p class="text-gray-500 dark:text-gray-400">Nenhum áudio disponível</p>'}
                 </div>
 
+                <div class="space-y-2">
+                    <h4 class="font-medium text-gray-700 dark:text-gray-200 mb-2">Resumo da Consulta:</h4>
+                    <p class="text-gray-600 dark:text-gray-300">
+                        Consulta realizada com ${appointment.analysis.patient_info.data.doctor} para avaliação de ${appointment.analysis.patient_info.data.patient}.
+                        ${appointment.analysis.anamnese.symptoms.length > 0 ? 
+                            `Principais queixas incluem ${appointment.analysis.anamnese.symptoms.join('. ')}.` : 
+                            'Sem sintomas registrados.'}
+                    </p>
+                </div>
+
                 <div class="space-y-2" id="patient-info">
-                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Informações do Paciente</h3>
+                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">${appointment.analysis.patient_info.title}</h3>
                     <div class="bg-neutral-100 dark:bg-neutral-700 p-4 rounded-lg">
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <p class="text-gray-600 dark:text-gray-300"><span class="font-medium">Médico:</span> Dr. Carlos</p>
-                                <p class="text-gray-600 dark:text-gray-300"><span class="font-medium">Paciente:</span> Rogerinho</p>
+                                <p class="text-gray-600 dark:text-gray-300"><span class="font-medium">Médico:</span> ${appointment.analysis.patient_info.data.doctor}</p>
+                                <p class="text-gray-600 dark:text-gray-300"><span class="font-medium">Paciente:</span> ${appointment.analysis.patient_info.data.patient}</p>
                             </div>
                             <div>
-                                <p class="text-gray-600 dark:text-gray-300"><span class="font-medium">Idade:</span> 38 anos</p>
-                                <p class="text-gray-600 dark:text-gray-300"><span class="font-medium">Sexo:</span> Masculino</p>
+                                <p class="text-gray-600 dark:text-gray-300"><span class="font-medium">Idade:</span> ${appointment.analysis.patient_info.data.age}</p>
+                                <p class="text-gray-600 dark:text-gray-300"><span class="font-medium">Sexo:</span> ${appointment.analysis.patient_info.data.gender === '[placeholder]' ? 'Não informado' : appointment.analysis.patient_info.data.gender}</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="space-y-2" id="anamnese">
-                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Anamnese</h3>
+                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">${appointment.analysis.anamnese.title}</h3>
                     <div class="bg-neutral-100 dark:bg-neutral-700 p-4 rounded-lg">
-                        <h4 class="font-medium text-gray-700 dark:text-gray-200">Principais Sintomas:</h4>
+                        <h4 class="font-medium text-gray-700 dark:text-gray-200">${appointment.analysis.anamnese.symptoms_title}:</h4>
                         <ul class="list-disc pl-5 mt-2 text-gray-600 dark:text-gray-300">
-                            <li>Dor nas costas, especialmente na parte inferior.</li>
-                            <li>Fisgadas descendendo para a coxa esquerda, especialmente após esforço.</li>
-                            <li>Tensão muscular na região lombar.</li>
+                            ${appointment.analysis.anamnese.symptoms.map(symptom => `<li>${symptom}</li>`).join('')}
                         </ul>
                     </div>
                 </div>
 
                 <div class="space-y-2" id="conduct-code">
-                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Alinhamento com Código de Conduta</h3>
+                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">${appointment.analysis.conduct_code.title}</h3>
                     <div class="bg-neutral-100 dark:bg-neutral-700 p-4 rounded-lg">
-                        <p class="text-gray-600 dark:text-gray-300">As informações são tratadas com confidencialidade máxima. O diagnóstico proposto é preliminar e não substitui uma consulta médica formal.</p>
+                        <p class="text-gray-600 dark:text-gray-300">${appointment.analysis.conduct_code.text}</p>
                     </div>
                 </div>
 
                 <div class="space-y-2" id="suggested-exams">
-                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Exames Sugeridos</h3>
+                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">${appointment.analysis.suggested_exams.title}</h3>
                     <div class="bg-neutral-100 dark:bg-neutral-700 p-4 rounded-lg">
                         <ul class="list-disc pl-5 text-gray-600 dark:text-gray-300">
-                            <li>Ressonância magnética da região lombar.</li>
+                            ${appointment.analysis.suggested_exams.exams.map(exam => `<li>${exam}</li>`).join('')}
                         </ul>
                     </div>
                 </div>
 
                 <div class="space-y-2" id="additional-questions">
-                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Perguntas Adicionais</h3>
+                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">${appointment.analysis.additional_questions.title}</h3>
                     <div class="bg-neutral-100 dark:bg-neutral-700 p-4 rounded-lg">
                         <ul class="list-disc pl-5 text-gray-600 dark:text-gray-300">
-                            <li>Você notou alguma alteração na sua rotina de sono ou estresse elevado recentemente?</li>
-                            <li>Você já consultou um fisioterapeuta ou especialista em dor lombar antes?</li>
+                            ${appointment.analysis.additional_questions.questions.map(question => `<li>${question}</li>`).join('')}
                         </ul>
                     </div>
                 </div>
 
                 <div class="space-y-2" id="preliminary-diagnosis">
-                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Diagnóstico Preliminar</h3>
+                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">${appointment.analysis.preliminary_diagnosis.title}</h3>
                     <div class="bg-neutral-100 dark:bg-neutral-700 p-4 rounded-lg">
-                        <p class="text-gray-600 dark:text-gray-300">Possível sobrecarga na região lombar, agravada por movimentos de impacto relacionados à prática de crossfit. Necessário descartar condições como hérnia de disco ou lesão muscular mais séria.</p>
+                        <p class="text-gray-600 dark:text-gray-300">${appointment.analysis.preliminary_diagnosis.diagnosis}</p>
                     </div>
                 </div>
 
@@ -452,13 +459,7 @@ export function AppointmentView(appointment) {
                     </div>
                 ` : ''}
             </div>
-        </div>
-        <div class="bg-white dark:bg-neutral-800 form-container rounded-lg shadow-md p-6 mx-auto mt-6">
-            <div class="space-y-2">
-                <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Análise da consulta</h2>                     
-                ${appointment.analysis ? appointment.analysis.replace(/^["']|["']$/g, '').replace(/\\n/g, '<br>').replace(/\\"/g, '"').replace(/^deu certo$/g, 'Análise concluída com sucesso') : 'Nenhuma análise disponível.'} 
-            </div>
-        </div>        
+        </div>       
     `;
 }
 
@@ -513,6 +514,13 @@ export async function loadAppointment(id) {
         const appointment = await response.json();
         console.log('Dados da consulta recebidos:', appointment);
 
+        // Verifica se já existe uma análise
+        if (!appointment.analysis || Object.keys(appointment.analysis).length === 0) {
+            console.log('Análise não encontrada, gerando nova análise...');
+            await generateDocument(id);
+            return;
+        }
+
         // Tenta renderizar a visualização com tratamento de erro
         console.log('Iniciando renderização...');
         try {
@@ -523,22 +531,6 @@ export async function loadAppointment(id) {
 
             // Adiciona o chat
             document.body.appendChild(createChat());
-
-            // Verifica se o conteúdo está visível
-            const mainElement = appElement.querySelector('main');
-            if (mainElement) {
-                console.log('Dimensões do elemento main:', {
-                    offsetWidth: mainElement.offsetWidth,
-                    offsetHeight: mainElement.offsetHeight,
-                    clientWidth: mainElement.clientWidth,
-                    clientHeight: mainElement.clientHeight
-                });
-            }
-
-            // Força um reflow
-            appElement.style.display = 'none';
-            appElement.offsetHeight; // Força um reflow
-            appElement.style.display = '';
 
         } catch (renderError) {
             console.error('Erro durante a renderização:', renderError);
@@ -560,15 +552,6 @@ export async function loadAppointment(id) {
                     </div>
                 </div>
             `;
-        }
-
-        // Abre a sidebar automaticamente
-        const sidebar = document.getElementById('sidebar');
-        const mainContent = document.querySelector('.main-content');
-        if (sidebar && mainContent) {
-            sidebar.classList.remove('-translate-x-full');
-            mainContent.classList.remove('ml-0');
-            mainContent.classList.add('ml-64');
         }
 
     } catch (error) {
@@ -648,74 +631,76 @@ export async function generateDocument(id) {
         const n8nData = await n8nResponse.json();
         console.log('Dados brutos da análise recebidos:', n8nData);
         
-        // Adiciona a análise ao objeto appointment usando a mesma lógica da outra plataforma
+        // Adiciona a análise ao objeto appointment
         if (Array.isArray(n8nData) && n8nData.length > 0) {
-            console.log('Primeiro item da resposta:', n8nData[0]);
-            console.log('Output do primeiro item:', n8nData[0].output);
+            console.log('=== DEBUG: Início do processamento ===');
             
-            // Remove as aspas extras e caracteres de escape
-            let analysisText = n8nData[0].output
-                .replace(/^["']|["']$/g, '') // Remove aspas no início e fim
-                .replace(/\\n/g, '\n') // Substitui \n por quebra de linha real
-                .replace(/\\"/g, '"'); // Substitui \" por "
-            
-            appointment.analysis = analysisText;
+            try {
+                // Se o output for uma string, faz o parse
+                if (typeof n8nData[0].output === 'string') {
+                    appointment.analysis = JSON.parse(n8nData[0].output);
+                } else {
+                    // Se já for um objeto, usa diretamente
+                    appointment.analysis = n8nData[0].output;
+                }
+
+                console.log('=== DEBUG: Análise processada ===');
+                console.log('Análise:', appointment.analysis);
+                
+            } catch (error) {
+                console.error('=== DEBUG: Erro no processamento ===');
+                console.error('Erro:', error);
+                appointment.analysis = {
+                    error: 'Erro ao processar análise: ' + error.message
+                };
+            }
         } else {
-            console.log('Resposta não está no formato esperado:', n8nData);
-            appointment.analysis = 'Nenhuma análise disponível.';
+            appointment.analysis = {
+                error: 'Dados da análise não disponíveis'
+            };
         }
 
-        console.log('Análise final que será exibida:', appointment.analysis);
+        // Atualiza o appointment com a nova análise
+        const updatedAppointment = {
+            ...appointment,
+            analysis: appointment.analysis
+        };
 
-        // Tenta renderizar a visualização com tratamento de erro
-        console.log('Iniciando renderização...');
+        // Salva a análise no servidor
         try {
-            const htmlContent = AppointmentView(appointment);
-            console.log('HTML gerado com sucesso');
-            appElement.innerHTML = htmlContent;
-            console.log('HTML inserido no DOM');
+            console.log('Salvando análise no servidor...');
+            const updateResponse = await fetch(`/api/appointments/${id}/analysis`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    analysis: appointment.analysis
+                })
+            });
 
-            // Verifica se o conteúdo está visível
-            const mainElement = appElement.querySelector('main');
-            if (mainElement) {
-                console.log('Dimensões do elemento main:', {
-                    offsetWidth: mainElement.offsetWidth,
-                    offsetHeight: mainElement.offsetHeight,
-                    clientWidth: mainElement.clientWidth,
-                    clientHeight: mainElement.clientHeight
-                });
+            if (!updateResponse.ok) {
+                console.error('Erro ao salvar análise:', updateResponse.status);
+                throw new Error(`Erro ao salvar análise: ${updateResponse.status}`);
             }
 
-            // Força um reflow
-            appElement.style.display = 'none';
-            appElement.offsetHeight; // Força um reflow
-            appElement.style.display = '';
+            console.log('Análise salva com sucesso');
+        } catch (error) {
+            console.error('Erro ao salvar análise:', error);
+            // Mesmo com erro ao salvar, tentamos mostrar os dados
+            console.log('Tentando mostrar dados mesmo com erro ao salvar...');
+        }
 
+        // Renderiza a visualização com os dados atualizados
+        try {
+            const htmlContent = AppointmentView(updatedAppointment);
+            appElement.innerHTML = htmlContent;
+            
+            // Adiciona o chat
+            document.body.appendChild(createChat());
         } catch (renderError) {
-            console.error('Erro durante a renderização:', renderError);
-            appElement.innerHTML = `
-                <div class="bg-white dark:bg-neutral-800 form-container rounded-lg shadow-md p-6 mx-auto">
-                    <div class="text-center">
-                        <h2 class="text-xl font-semibold text-red-600 dark:text-red-400 mb-4">
-                            Erro ao renderizar consulta
-                        </h2>
-                        <p class="text-gray-600 dark:text-gray-300 mb-6">
-                            ${renderError.message}
-                        </p>
-                        <div class="mt-4 p-4 bg-gray-100 dark:bg-gray-700 rounded text-left">
-                            <pre class="text-sm text-gray-600 dark:text-gray-300">
-                                Dados da análise: ${JSON.stringify(appointment.analysis, null, 2)}
-                            </pre>
-                        </div>
-                        <div class="space-y-4 mt-4">
-                            <button onclick="window.location.reload()" 
-                                    class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark">
-                                Tentar novamente
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `;
+            console.error('Erro ao renderizar:', renderError);
+            throw renderError;
         }
 
     } catch (error) {
