@@ -44,16 +44,38 @@ export function createChat() {
             </button>
             
             <!-- Chat expandido -->
-            <div id="chat-expanded" class="hidden bg-white dark:bg-neutral-800 rounded-lg shadow-xl w-80 h-[32rem] mb-4 flex flex-col">
+            <div id="chat-expanded" class="hidden bg-white dark:bg-neutral-800 rounded-lg shadow-xl w-96 mt-24 mb-4 flex flex-col" style="height: calc(100vh - 7rem);">
                 <!-- Cabeçalho -->
-                <div class="p-4 border-b border-gray-200 dark:border-neutral-700 flex justify-between items-center">
-                    <div>
-                        <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Assistente Virtual</h3>
-                        <p class="text-sm text-gray-500 dark:text-gray-400">Tire suas dúvidas sobre a consulta</p>
+                <div class="p-4 border-b border-gray-200 dark:border-neutral-700">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Assistente Virtual</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">Tire suas dúvidas sobre a consulta</p>
+                        </div>
+                        <button id="chat-minimize" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 p-1">
+                            <i class="ph ph-minus-circle text-xl"></i>
+                        </button>
                     </div>
-                    <button id="chat-minimize" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 p-1">
-                        <i class="ph ph-minus-circle text-xl"></i>
-                    </button>
+                    
+                    <!-- Botões de ação rápida -->
+                    <div class="grid grid-cols-2 gap-2">
+                        <button class="quick-action-btn bg-gray-100 dark:bg-neutral-700 hover:bg-gray-200 dark:hover:bg-neutral-600 text-gray-700 dark:text-gray-200 text-sm p-2 rounded-lg transition-colors duration-200 text-left">
+                            <i class="ph ph-file-text text-primary mr-2"></i>
+                            O que eu deveria solicitar de exames?
+                        </button>
+                        <button class="quick-action-btn bg-gray-100 dark:bg-neutral-700 hover:bg-gray-200 dark:hover:bg-neutral-600 text-gray-700 dark:text-gray-200 text-sm p-2 rounded-lg transition-colors duration-200 text-left">
+                            <i class="ph ph-stethoscope text-primary mr-2"></i>
+                            Que especialidade encaminhar?
+                        </button>
+                        <button class="quick-action-btn bg-gray-100 dark:bg-neutral-700 hover:bg-gray-200 dark:hover:bg-neutral-600 text-gray-700 dark:text-gray-200 text-sm p-2 rounded-lg transition-colors duration-200 text-left">
+                            <i class="ph ph-question text-primary mr-2"></i>
+                            Quais perguntas fazer?
+                        </button>
+                        <button class="quick-action-btn bg-gray-100 dark:bg-neutral-700 hover:bg-gray-200 dark:hover:bg-neutral-600 text-gray-700 dark:text-gray-200 text-sm p-2 rounded-lg transition-colors duration-200 text-left">
+                            <i class="ph ph-pill text-primary mr-2"></i>
+                            O que receitar?
+                        </button>
+                    </div>
                 </div>
                 
                 <!-- Área de mensagens -->
@@ -95,6 +117,7 @@ export function createChat() {
     const expandedChat = chatContainer.querySelector('#chat-expanded');
     const chatForm = chatContainer.querySelector('#chat-form');
     const chatInput = chatContainer.querySelector('#chat-input');
+    const quickActionButtons = chatContainer.querySelectorAll('.quick-action-btn');
     
     toggleButton.addEventListener('click', () => {
         isExpanded = !isExpanded;
@@ -106,6 +129,19 @@ export function createChat() {
         isExpanded = false;
         expandedChat.classList.add('hidden');
         toggleButton.classList.remove('hidden');
+    });
+
+    // Event listener para os botões de ação rápida
+    quickActionButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const message = button.textContent.trim();
+            addMessage(message, true);
+            
+            // Simula resposta do assistente após 500ms
+            setTimeout(() => {
+                addMessage('Resposta padrão');
+            }, 500);
+        });
     });
 
     chatForm.addEventListener('submit', (e) => {
