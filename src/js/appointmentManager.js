@@ -343,7 +343,7 @@ export function AppointmentView(appointment) {
     });
 
     return `
-        <main class="bg-white dark:bg-neutral-800 form-container rounded-lg shadow-md p-6 mx-auto">
+        <div class="bg-white dark:bg-neutral-800 form-container rounded-lg shadow-md p-6 mx-auto">
             <div class="space-y-6">
                 <div class="flex justify-between items-center">
                     <h2 class="text-2xl font-bold text-gray-900 dark:text-white">${appointment.template_type}</h2>
@@ -364,6 +364,68 @@ export function AppointmentView(appointment) {
                         </audio>
                     ` : '<p class="text-gray-500 dark:text-gray-400">Nenhum áudio disponível</p>'}
                 </div>
+
+                <div class="space-y-2">
+                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Informações do Paciente</h3>
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <p class="text-gray-600 dark:text-gray-300"><span class="font-medium">Médico:</span> Dr. Carlos</p>
+                                <p class="text-gray-600 dark:text-gray-300"><span class="font-medium">Paciente:</span> Rogerinho</p>
+                            </div>
+                            <div>
+                                <p class="text-gray-600 dark:text-gray-300"><span class="font-medium">Idade:</span> 38 anos</p>
+                                <p class="text-gray-600 dark:text-gray-300"><span class="font-medium">Sexo:</span> Masculino</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Anamnese</h3>
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                        <h4 class="font-medium text-gray-700 dark:text-gray-200">Principais Sintomas:</h4>
+                        <ul class="list-disc pl-5 mt-2 text-gray-600 dark:text-gray-300">
+                            <li>Dor nas costas, especialmente na parte inferior.</li>
+                            <li>Fisgadas descendendo para a coxa esquerda, especialmente após esforço.</li>
+                            <li>Tensão muscular na região lombar.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Alinhamento com Código de Conduta</h3>
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                        <p class="text-gray-600 dark:text-gray-300">As informações são tratadas com confidencialidade máxima. O diagnóstico proposto é preliminar e não substitui uma consulta médica formal.</p>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Exames Sugeridos</h3>
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                        <ul class="list-disc pl-5 text-gray-600 dark:text-gray-300">
+                            <li>Ressonância magnética da região lombar.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Perguntas Adicionais</h3>
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                        <ul class="list-disc pl-5 text-gray-600 dark:text-gray-300">
+                            <li>Você notou alguma alteração na sua rotina de sono ou estresse elevado recentemente?</li>
+                            <li>Você já consultou um fisioterapeuta ou especialista em dor lombar antes?</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Diagnóstico Preliminar</h3>
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                        <p class="text-gray-600 dark:text-gray-300">Possível sobrecarga na região lombar, agravada por movimentos de impacto relacionados à prática de crossfit. Necessário descartar condições como hérnia de disco ou lesão muscular mais séria.</p>
+                    </div>
+                </div>
+
 
                 ${appointment.text_content ? `
                     <div class="space-y-2">
@@ -390,13 +452,13 @@ export function AppointmentView(appointment) {
                     </div>
                 ` : ''}
             </div>
-        </main>
-        <main class="bg-white dark:bg-neutral-800 form-container rounded-lg shadow-md p-6 mx-auto mt-6">
+        </div>
+        <div class="bg-white dark:bg-neutral-800 form-container rounded-lg shadow-md p-6 mx-auto mt-6">
             <div class="space-y-2">
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Análise da consulta</h2>                     
                 ${appointment.analysis ? appointment.analysis.replace(/^["']|["']$/g, '').replace(/\\n/g, '<br>').replace(/\\"/g, '"').replace(/^deu certo$/g, 'Análise concluída com sucesso') : 'Nenhuma análise disponível.'} 
             </div>
-        </main>        
+        </div>        
     `;
 }
 
