@@ -344,122 +344,137 @@ export function AppointmentView(appointment) {
     });
 
     return `
-        <div class="bg-white dark:bg-neutral-800 form-container rounded-lg shadow-md p-6 mx-auto">
-            <div class="space-y-6">
-                <div class="flex justify-between items-center">
-                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">${appointment.template_type}</h2>
-                    <span class="text-sm text-gray-500 dark:text-gray-400">${formattedDate}</span>
-                </div>
+        <div class="h-full w-full overflow-hidden flex">
+            <!-- Área de conteúdo principal -->
+            <div class="flex-1 overflow-y-auto bg-white dark:bg-neutral-800">
+                <div class="p-6">
+                    <div class="space-y-6">
+                        <div class="flex justify-between items-center">
+                            <h2 class="text-2xl font-bold text-gray-900 dark:text-white truncate mr-4">${appointment.template_type}</h2>
+                            <span class="text-sm text-gray-500 dark:text-gray-400 whitespace-nowrap">${formattedDate}</span>
+                        </div>
 
-                <div class="space-y-2">
-                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Contexto do Paciente</h3>
-                    <p class="text-gray-600 dark:text-gray-300">${appointment.patient_context || 'Nenhum contexto fornecido'}</p>
-                </div>
+                        <div class="space-y-2">
+                            <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Contexto do Paciente</h3>
+                            <p class="text-gray-600 dark:text-gray-300 break-words">${appointment.patient_context || 'Nenhum contexto fornecido'}</p>
+                        </div>
 
-                <div class="space-y-2">
-                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Áudio da Consulta</h3>
-                    ${appointment.audio_file && appointment.audio_file !== 'data:audio/wav;base64,' ? `
-                        <audio controls class="w-full">
-                            <source src="data:audio/wav;base64,${appointment.audio_file}" type="audio/wav">
-                            Seu navegador não suporta o elemento de áudio.
-                        </audio>
-                    ` : '<p class="text-gray-500 dark:text-gray-400">Nenhum áudio disponível</p>'}
-                </div>
+                        <div class="space-y-2">
+                            <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Áudio da Consulta</h3>
+                            ${appointment.audio_file && appointment.audio_file !== 'data:audio/wav;base64,' ? `
+                                <audio controls class="w-full">
+                                    <source src="data:audio/wav;base64,${appointment.audio_file}" type="audio/wav">
+                                    Seu navegador não suporta o elemento de áudio.
+                                </audio>
+                            ` : '<p class="text-gray-500 dark:text-gray-400">Nenhum áudio disponível</p>'}
+                        </div>
 
-                <div class="space-y-2">
-                    <h4 class="font-medium text-gray-700 dark:text-gray-200 mb-2">Resumo da Consulta:</h4>
-                    <p class="text-gray-600 dark:text-gray-300">
-                        Consulta realizada com ${appointment.analysis.patient_info.data.doctor} para avaliação de ${appointment.analysis.patient_info.data.patient}.
-                        ${appointment.analysis.anamnese.symptoms.length > 0 ? 
-                            `Principais queixas incluem ${appointment.analysis.anamnese.symptoms.join('. ')}.` : 
-                            'Sem sintomas registrados.'}
-                    </p>
-                </div>
+                        <div class="space-y-2">
+                            <h4 class="font-medium text-gray-700 dark:text-gray-200 mb-2">Resumo da Consulta:</h4>
+                            <p class="text-gray-600 dark:text-gray-300 break-words">
+                                Consulta realizada com ${appointment.analysis.patient_info.data.doctor} para avaliação de ${appointment.analysis.patient_info.data.patient}.
+                                ${appointment.analysis.anamnese.symptoms.length > 0 ? 
+                                    `Principais queixas incluem ${appointment.analysis.anamnese.symptoms.join('. ')}.` : 
+                                    'Sem sintomas registrados.'}
+                            </p>
+                        </div>
 
-                <div class="space-y-2" id="patient-info">
-                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">${appointment.analysis.patient_info.title}</h3>
-                    <div class="bg-neutral-100 dark:bg-neutral-700 p-4 rounded-lg">
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <p class="text-gray-600 dark:text-gray-300"><span class="font-medium">Médico:</span> ${appointment.analysis.patient_info.data.doctor}</p>
-                                <p class="text-gray-600 dark:text-gray-300"><span class="font-medium">Paciente:</span> ${appointment.analysis.patient_info.data.patient}</p>
+                        <div class="space-y-2" id="patient-info">
+                            <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">${appointment.analysis.patient_info.title}</h3>
+                            <div class="bg-neutral-100 dark:bg-neutral-700 p-4 rounded-lg">
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <p class="text-gray-600 dark:text-gray-300"><span class="font-medium">Médico:</span> ${appointment.analysis.patient_info.data.doctor}</p>
+                                        <p class="text-gray-600 dark:text-gray-300"><span class="font-medium">Paciente:</span> ${appointment.analysis.patient_info.data.patient}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-gray-600 dark:text-gray-300"><span class="font-medium">Idade:</span> ${appointment.analysis.patient_info.data.age}</p>
+                                        <p class="text-gray-600 dark:text-gray-300"><span class="font-medium">Sexo:</span> ${appointment.analysis.patient_info.data.gender === '[placeholder]' ? 'Não informado' : appointment.analysis.patient_info.data.gender}</p>
+                                    </div>
+                                </div>
                             </div>
-                            <div>
-                                <p class="text-gray-600 dark:text-gray-300"><span class="font-medium">Idade:</span> ${appointment.analysis.patient_info.data.age}</p>
-                                <p class="text-gray-600 dark:text-gray-300"><span class="font-medium">Sexo:</span> ${appointment.analysis.patient_info.data.gender === '[placeholder]' ? 'Não informado' : appointment.analysis.patient_info.data.gender}</p>
+                        </div>
+
+                        <div class="space-y-2" id="anamnese">
+                            <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">${appointment.analysis.anamnese.title}</h3>
+                            <div class="bg-neutral-100 dark:bg-neutral-700 p-4 rounded-lg">
+                                <h4 class="font-medium text-gray-700 dark:text-gray-200">${appointment.analysis.anamnese.symptoms_title}:</h4>
+                                <ul class="list-disc pl-5 mt-2 text-gray-600 dark:text-gray-300">
+                                    ${appointment.analysis.anamnese.symptoms.map(symptom => `<li>${symptom}</li>`).join('')}
+                                </ul>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-                <div class="space-y-2" id="anamnese">
-                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">${appointment.analysis.anamnese.title}</h3>
-                    <div class="bg-neutral-100 dark:bg-neutral-700 p-4 rounded-lg">
-                        <h4 class="font-medium text-gray-700 dark:text-gray-200">${appointment.analysis.anamnese.symptoms_title}:</h4>
-                        <ul class="list-disc pl-5 mt-2 text-gray-600 dark:text-gray-300">
-                            ${appointment.analysis.anamnese.symptoms.map(symptom => `<li>${symptom}</li>`).join('')}
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="space-y-2" id="conduct-code">
-                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">${appointment.analysis.conduct_code.title}</h3>
-                    <div class="bg-neutral-100 dark:bg-neutral-700 p-4 rounded-lg">
-                        <p class="text-gray-600 dark:text-gray-300">${appointment.analysis.conduct_code.text}</p>
-                    </div>
-                </div>
-
-                <div class="space-y-2" id="suggested-exams">
-                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">${appointment.analysis.suggested_exams.title}</h3>
-                    <div class="bg-neutral-100 dark:bg-neutral-700 p-4 rounded-lg">
-                        <ul class="list-disc pl-5 text-gray-600 dark:text-gray-300">
-                            ${appointment.analysis.suggested_exams.exams.map(exam => `<li>${exam}</li>`).join('')}
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="space-y-2" id="additional-questions">
-                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">${appointment.analysis.additional_questions.title}</h3>
-                    <div class="bg-neutral-100 dark:bg-neutral-700 p-4 rounded-lg">
-                        <ul class="list-disc pl-5 text-gray-600 dark:text-gray-300">
-                            ${appointment.analysis.additional_questions.questions.map(question => `<li>${question}</li>`).join('')}
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="space-y-2" id="preliminary-diagnosis">
-                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">${appointment.analysis.preliminary_diagnosis.title}</h3>
-                    <div class="bg-neutral-100 dark:bg-neutral-700 p-4 rounded-lg">
-                        <p class="text-gray-600 dark:text-gray-300">${appointment.analysis.preliminary_diagnosis.diagnosis}</p>
-                    </div>
-                </div>
-
-                ${appointment.text_content ? `
-                    <div class="space-y-2">
-                        <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Conteúdo do Arquivo de Texto</h3>
-                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-                            <pre class="text-sm text-gray-600 dark:text-gray-300 whitespace-pre-wrap">${appointment.text_content}</pre>
+                        <div class="space-y-2" id="conduct-code">
+                            <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">${appointment.analysis.conduct_code.title}</h3>
+                            <div class="bg-neutral-100 dark:bg-neutral-700 p-4 rounded-lg">
+                                <p class="text-gray-600 dark:text-gray-300">${appointment.analysis.conduct_code.text}</p>
+                            </div>
                         </div>
-                    </div>
-                ` : ''}
 
-                ${appointment.transcription ? `
-                    <div class="space-y-2">
-                        <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Transcrição</h3>
-                        <p class="text-gray-600 dark:text-gray-300">${appointment.transcription}</p>
-                    </div>
-                ` : ''}
-
-                ${appointment.generated_document ? `
-                    <div class="space-y-2">
-                        <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Documento Gerado</h3>
-                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
-                            <pre class="text-sm text-gray-600 dark:text-gray-300 whitespace-pre-wrap">${appointment.generated_document}</pre>
+                        <div class="space-y-2" id="suggested-exams">
+                            <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">${appointment.analysis.suggested_exams.title}</h3>
+                            <div class="bg-neutral-100 dark:bg-neutral-700 p-4 rounded-lg">
+                                <ul class="list-disc pl-5 text-gray-600 dark:text-gray-300">
+                                    ${appointment.analysis.suggested_exams.exams.map(exam => `<li>${exam}</li>`).join('')}
+                                </ul>
+                            </div>
                         </div>
+
+                        <div class="space-y-2" id="additional-questions">
+                            <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">${appointment.analysis.additional_questions.title}</h3>
+                            <div class="bg-neutral-100 dark:bg-neutral-700 p-4 rounded-lg">
+                                <ul class="list-disc pl-5 text-gray-600 dark:text-gray-300">
+                                    ${appointment.analysis.additional_questions.questions.map(question => `<li>${question}</li>`).join('')}
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2" id="preliminary-diagnosis">
+                            <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">${appointment.analysis.preliminary_diagnosis.title}</h3>
+                            <div class="bg-neutral-100 dark:bg-neutral-700 p-4 rounded-lg">
+                                <p class="text-gray-600 dark:text-gray-300">${appointment.analysis.preliminary_diagnosis.diagnosis}</p>
+                            </div>
+                        </div>
+
+                        ${appointment.text_content ? `
+                            <div class="space-y-2">
+                                <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Conteúdo do Arquivo de Texto</h3>
+                                <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                                    <pre class="text-sm text-gray-600 dark:text-gray-300 whitespace-pre-wrap">${appointment.text_content}</pre>
+                                </div>
+                            </div>
+                        ` : ''}
+
+                        ${appointment.transcription ? `
+                            <div class="space-y-2">
+                                <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Transcrição</h3>
+                                <p class="text-gray-600 dark:text-gray-300">${appointment.transcription}</p>
+                            </div>
+                        ` : ''}
+
+                        ${appointment.generated_document ? `
+                            <div class="space-y-2">
+                                <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Documento Gerado</h3>
+                                <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                                    <pre class="text-sm text-gray-600 dark:text-gray-300 whitespace-pre-wrap">${appointment.generated_document}</pre>
+                                </div>
+                            </div>
+                        ` : ''}
                     </div>
-                ` : ''}
+                </div>
             </div>
-        </div>       
+
+            <!-- Chat -->
+            <div class="w-[400px] flex-shrink-0 flex flex-col h-full bg-white dark:bg-neutral-800 border-l border-gray-200 dark:border-neutral-700">
+                <div class="p-4 border-b border-gray-200 dark:border-neutral-700">
+                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Chat</h3>
+                </div>
+                <div id="chat-container" class="flex-1 flex flex-col overflow-hidden">
+                    <!-- O conteúdo do chat será inserido aqui dinamicamente -->
+                </div>
+            </div>
+        </div>
     `;
 }
 
@@ -480,14 +495,6 @@ function decodeHtml(html) {
 // Função para carregar uma consulta específica
 export async function loadAppointment(id) {
     try {
-        // Remove chat existente se houver
-        document.getElementById('chat-container')?.remove();
-        
-        // Adiciona o ID da consulta à URL
-        const url = new URL(window.location.href);
-        url.searchParams.set('id', id);
-        window.history.pushState({}, '', url);
-        
         const appElement = document.getElementById('app');
         if (!appElement) {
             throw new Error('Elemento app não encontrado');
@@ -529,8 +536,8 @@ export async function loadAppointment(id) {
             appElement.innerHTML = htmlContent;
             console.log('HTML inserido no DOM');
 
-            // Adiciona o chat
-            document.body.appendChild(createChat());
+            // Inicializa o chat
+            createChat();
 
             // Ativa a sidebar automaticamente
             const sidebar = document.getElementById('sidebar');
@@ -709,8 +716,8 @@ export async function generateDocument(id) {
             const htmlContent = AppointmentView(updatedAppointment);
             appElement.innerHTML = htmlContent;
             
-            // Adiciona o chat
-            document.body.appendChild(createChat());
+            // Inicializa o chat
+            createChat();
             
             // Ativa a sidebar automaticamente
             const sidebar = document.getElementById('sidebar');

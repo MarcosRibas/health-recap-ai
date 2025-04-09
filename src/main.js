@@ -68,6 +68,10 @@ export async function initializeFormEvents() {
 // Inicialização da aplicação
 document.addEventListener('DOMContentLoaded', async () => {
     try {
+        // Previne rolagem no body
+        document.body.style.overflow = 'hidden';
+        document.body.style.height = '100vh';
+        
         // Adiciona a navbar ao DOM
         document.body.insertBefore(createNavbar(), document.body.firstChild);
 
@@ -84,8 +88,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             throw new Error('Elemento app não encontrado');
         }
 
-        // Ajusta o container principal para considerar a sidebar
-        appElement.parentElement.className = 'main-content container mx-auto px-4 py-8 max-w-3xl pt-24 transition-all duration-300 ml-0';
+        // Ajusta o container principal para ocupar toda a largura disponível
+        appElement.parentElement.className = 'main-content ml-64 transition-all duration-300 h-[calc(100vh-4rem)] mt-16';
+        appElement.className = 'h-full overflow-hidden';
 
         // Renderiza o formulário
         appElement.innerHTML = AppointmentForm();
