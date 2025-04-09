@@ -127,19 +127,19 @@ export function createChat() {
                 <div class="grid grid-cols-2 gap-2">
                     <button class="quick-action-btn bg-gray-100 dark:bg-neutral-700 hover:bg-gray-200 dark:hover:bg-neutral-600 text-gray-700 dark:text-gray-200 text-sm p-2 rounded-lg transition-colors duration-200 text-left">
                         <i class="ph ph-file-text text-primary mr-2"></i>
-                        O que eu deveria solicitar de exames?
+                        O que eu deveria solicitar de exames para esse paciente?
                     </button>
                     <button class="quick-action-btn bg-gray-100 dark:bg-neutral-700 hover:bg-gray-200 dark:hover:bg-neutral-600 text-gray-700 dark:text-gray-200 text-sm p-2 rounded-lg transition-colors duration-200 text-left">
                         <i class="ph ph-stethoscope text-primary mr-2"></i>
-                        Que especialidade encaminhar?
+                        Que outra especialidade esse paciente deveria visitar?
                     </button>
                     <button class="quick-action-btn bg-gray-100 dark:bg-neutral-700 hover:bg-gray-200 dark:hover:bg-neutral-600 text-gray-700 dark:text-gray-200 text-sm p-2 rounded-lg transition-colors duration-200 text-left">
                         <i class="ph ph-question text-primary mr-2"></i>
-                        Quais perguntas fazer?
+                        Quais perguntas eu deveria fazer para esse paciente?
                     </button>
                     <button class="quick-action-btn bg-gray-100 dark:bg-neutral-700 hover:bg-gray-200 dark:hover:bg-neutral-600 text-gray-700 dark:text-gray-200 text-sm p-2 rounded-lg transition-colors duration-200 text-left">
                         <i class="ph ph-pill text-primary mr-2"></i>
-                        O que receitar?
+                        O que eu deveria receitar para esse paciente?
                     </button>
                 </div>
             </div>
