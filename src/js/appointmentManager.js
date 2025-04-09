@@ -467,9 +467,6 @@ export function AppointmentView(appointment) {
 
             <!-- Chat -->
             <div class="w-[400px] flex-shrink-0 flex flex-col h-full bg-white dark:bg-neutral-800 border-l border-gray-200 dark:border-neutral-700">
-                <div class="p-4 border-b border-gray-200 dark:border-neutral-700">
-                    <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Chat</h3>
-                </div>
                 <div id="chat-container" class="flex-1 flex flex-col overflow-hidden">
                     <!-- O conteúdo do chat será inserido aqui dinamicamente -->
                 </div>

@@ -121,22 +121,10 @@ export function createChat() {
     // HTML do chat
     chatContainer.innerHTML = `
         <div class="flex flex-col h-full">
-            <!-- Área de mensagens -->
-            <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-4 max-h-[calc(100vh-16rem)]">
-                <!-- Mensagem do assistente -->
-                <div class="flex items-start space-x-2 mb-4">
-                    <div class="w-8 h-8 flex-shrink-0 rounded-full bg-primary flex items-center justify-center text-white">
-                        <i class="ph ph-robot text-lg"></i>
-                    </div>
-                    <div class="bg-gray-100 dark:bg-neutral-700 rounded-lg p-3 max-w-[80%] break-words">
-                        <p class="text-gray-700 dark:text-gray-200">Olá! Como posso ajudar você com informações sobre esta consulta?</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Botões de ação rápida -->
-            <div class="p-4 border-t border-gray-200 dark:border-neutral-700">
-                <div class="grid grid-cols-2 gap-2 mb-4">
+            <!-- Header com título e botões de ação rápida -->
+            <div class="p-4 border-b border-gray-200 dark:border-neutral-700">
+                <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-4">Chat</h3>
+                <div class="grid grid-cols-2 gap-2">
                     <button class="quick-action-btn bg-gray-100 dark:bg-neutral-700 hover:bg-gray-200 dark:hover:bg-neutral-600 text-gray-700 dark:text-gray-200 text-sm p-2 rounded-lg transition-colors duration-200 text-left">
                         <i class="ph ph-file-text text-primary mr-2"></i>
                         O que eu deveria solicitar de exames?
@@ -154,8 +142,23 @@ export function createChat() {
                         O que receitar?
                     </button>
                 </div>
-                
-                <!-- Área de input -->
+            </div>
+
+            <!-- Área de mensagens -->
+            <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-4">
+                <!-- Mensagem do assistente -->
+                <div class="flex items-start space-x-2 mb-4">
+                    <div class="w-8 h-8 flex-shrink-0 rounded-full bg-primary flex items-center justify-center text-white">
+                        <i class="ph ph-robot text-lg"></i>
+                    </div>
+                    <div class="bg-gray-100 dark:bg-neutral-700 rounded-lg p-3 max-w-[80%] break-words">
+                        <p class="text-gray-700 dark:text-gray-200">Olá! Como posso ajudar você com informações sobre esta consulta?</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Área de input -->
+            <div class="p-4 border-t border-gray-200 dark:border-neutral-700">
                 <form id="chat-form" class="flex space-x-2">
                     <input 
                         type="text" 
