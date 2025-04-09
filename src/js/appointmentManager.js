@@ -355,11 +355,6 @@ export function AppointmentView(appointment) {
                         </div>
 
                         <div class="space-y-2">
-                            <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Contexto do Paciente</h3>
-                            <p class="text-gray-600 dark:text-gray-300 break-words">${appointment.patient_context || 'Nenhum contexto fornecido'}</p>
-                        </div>
-
-                        <div class="space-y-2">
                             <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Áudio da Consulta</h3>
                             ${appointment.audio_file && appointment.audio_file !== 'data:audio/wav;base64,' ? `
                                 <audio controls class="w-full">
@@ -370,13 +365,22 @@ export function AppointmentView(appointment) {
                         </div>
 
                         <div class="space-y-2">
-                            <h4 class="font-medium text-gray-700 dark:text-gray-200 mb-2">Resumo da Consulta:</h4>
-                            <p class="text-gray-600 dark:text-gray-300 break-words">
-                                Consulta realizada com ${appointment.analysis.patient_info.data.doctor} para avaliação de ${appointment.analysis.patient_info.data.patient}.
-                                ${appointment.analysis.anamnese.symptoms.length > 0 ? 
-                                    `Principais queixas incluem ${appointment.analysis.anamnese.symptoms.join('. ')}.` : 
-                                    'Sem sintomas registrados.'}
-                            </p>
+                            <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Contexto do Paciente</h3>
+                            <div class="bg-neutral-100 dark:bg-neutral-700 p-4 rounded-lg">
+                                <p class="text-gray-600 dark:text-gray-300 break-words">${appointment.patient_context || 'Nenhum contexto fornecido'}</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Resumo da Consulta:</h3>
+                            <div class="bg-neutral-100 dark:bg-neutral-700 p-4 rounded-lg">
+                                <p class="text-gray-600 dark:text-gray-300 break-words">
+                                    Consulta realizada com ${appointment.analysis.patient_info.data.doctor} para avaliação de ${appointment.analysis.patient_info.data.patient}.
+                                    ${appointment.analysis.anamnese.symptoms.length > 0 ? 
+                                        `Principais queixas incluem ${appointment.analysis.anamnese.symptoms.join('. ')}.` : 
+                                        'Sem sintomas registrados.'}
+                                </p>
+                            </div>
                         </div>
 
                         <div class="space-y-2" id="patient-info">
@@ -615,7 +619,7 @@ export async function generateDocument(id) {
 
         // Exibe tela de carregamento
         appElement.innerHTML = `
-            <div class="bg-white dark:bg-neutral-800 form-container rounded-lg shadow-md p-6 mx-auto">
+            <div class="bg-white dark:bg-neutral-800 form-container rounded-lg shadow-md mt-5 p-6 mx-auto">
                 <div class="flex flex-col items-center justify-center space-y-4">
                     <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
                     <p class="text-gray-700 dark:text-gray-200">Gerando documento e realizando análise...</p>
