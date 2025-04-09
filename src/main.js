@@ -89,8 +89,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         // Ajusta o container principal para ocupar toda a largura disponível
-        appElement.parentElement.className = 'main-content ml-64 transition-all duration-300 h-[calc(100vh-4rem)] mt-16';
+        appElement.parentElement.className = 'main-content ml-0 transition-all duration-300 h-[calc(100vh-4rem)] mt-16';
         appElement.className = 'h-full overflow-hidden';
+
+        // Adiciona a classe que esconde a sidebar
+        sidebar.classList.add('-translate-x-full');
+
+        // Adiciona evento de clique ao botão de toggle
+        const toggleButton = document.querySelector('nav button[title="Menu"]');
+        if (toggleButton) {
+            toggleButton.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+                const mainContent = document.querySelector('.main-content');
+                if (mainContent) {
+                    mainContent.classList.toggle('ml-0');
+                    mainContent.classList.toggle('ml-64');
+                }
+            });
+        }
 
         // Renderiza o formulário
         appElement.innerHTML = AppointmentForm();

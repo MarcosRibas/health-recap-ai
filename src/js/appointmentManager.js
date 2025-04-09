@@ -5,7 +5,7 @@ import { createChat } from '../components/Chat.js';
 // Função para gerar o formulário
 export function AppointmentForm() {
     return `
-        <main class="bg-white dark:bg-dark-lighter form-container rounded-lg shadow-md p-6 mx-auto">
+        <main class="bg-white dark:bg-dark-lighter form-container rounded-lg shadow-md mt-5 p-6 mx-auto">
             <form class="space-y-6">
                 <div class="space-y-2">
                     <label class="block text-gray-700 dark:text-dark-text-primary">
@@ -536,9 +536,10 @@ export async function loadAppointment(id) {
             // Inicializa o chat
             createChat();
 
-            // Ativa a sidebar automaticamente
+            // Ativa a sidebar automaticamente e desabilita o botão de toggle
             const sidebar = document.getElementById('sidebar');
             const mainContent = document.querySelector('.main-content');
+            const toggleButton = document.querySelector('nav button[title="Menu"]');
             
             if (sidebar && mainContent) {
                 // Remove a classe que esconde a sidebar
@@ -547,6 +548,13 @@ export async function loadAppointment(id) {
                 // Ajusta o conteúdo principal
                 mainContent.classList.remove('ml-0');
                 mainContent.classList.add('ml-64');
+
+                // Desabilita o botão de toggle e adiciona estilo de desabilitado
+                if (toggleButton) {
+                    toggleButton.disabled = true;
+                    toggleButton.classList.add('opacity-50', 'cursor-not-allowed');
+                    toggleButton.classList.remove('hover:text-primary');
+                }
             }
 
         } catch (renderError) {
@@ -716,9 +724,10 @@ export async function generateDocument(id) {
             // Inicializa o chat
             createChat();
             
-            // Ativa a sidebar automaticamente
+            // Ativa a sidebar automaticamente e desabilita o botão de toggle
             const sidebar = document.getElementById('sidebar');
             const mainContent = document.querySelector('.main-content');
+            const toggleButton = document.querySelector('nav button[title="Menu"]');
             
             if (sidebar && mainContent) {
                 // Remove a classe que esconde a sidebar
@@ -727,6 +736,13 @@ export async function generateDocument(id) {
                 // Ajusta o conteúdo principal
                 mainContent.classList.remove('ml-0');
                 mainContent.classList.add('ml-64');
+
+                // Desabilita o botão de toggle e adiciona estilo de desabilitado
+                if (toggleButton) {
+                    toggleButton.disabled = true;
+                    toggleButton.classList.add('opacity-50', 'cursor-not-allowed');
+                    toggleButton.classList.remove('hover:text-primary');
+                }
             }
         } catch (renderError) {
             console.error('Erro ao renderizar:', renderError);

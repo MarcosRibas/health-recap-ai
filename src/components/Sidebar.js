@@ -69,18 +69,6 @@ export function createSidebar() {
             </div>
         </div>
     `;
-    
-    // Adiciona o botão de toggle na navbar (mantido apenas visualmente)
-    const navbar = document.querySelector('nav');
-    const toggleButton = document.createElement('button');
-    toggleButton.className = 'p-2 text-gray-500 hover:text-primary rounded-full mr-2 transition-colors duration-200';
-    toggleButton.innerHTML = '<i class="ph ph-list text-xl"></i>';
-    
-    // Insere o botão antes dos botões de tema
-    const flexContainer = navbar.querySelector('.flex');
-    if (flexContainer) {
-        flexContainer.insertBefore(toggleButton, flexContainer.firstChild);
-    }
 
     // Adiciona evento para o botão de nova consulta
     sidebar.querySelector('#newAppointmentBtn').addEventListener('click', () => {
