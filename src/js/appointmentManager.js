@@ -386,13 +386,14 @@ export function AppointmentView(appointment) {
                         <div class="space-y-2" id="patient-info">
                             <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">${appointment.analysis.patient_info.title}</h3>
                             <div class="bg-neutral-100 dark:bg-neutral-700 p-4 rounded-lg">
-                                <div class="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <p class="text-gray-600 dark:text-gray-300"><span class="font-medium">Médico:</span> ${appointment.analysis.patient_info.data.doctor}</p>
-                                        <p class="text-gray-600 dark:text-gray-300"><span class="font-medium">Paciente:</span> ${appointment.analysis.patient_info.data.patient}</p>
+                                <div class="grid grid-cols-3 gap-4">
+                                    <div>                                        
+                                        <p class="text-gray-600 dark:text-gray-300"><span class="font-medium">Nome:</span> ${appointment.analysis.patient_info.data.patient}</p>
                                     </div>
                                     <div>
-                                        <p class="text-gray-600 dark:text-gray-300"><span class="font-medium">Idade:</span> ${appointment.analysis.patient_info.data.age}</p>
+                                        <p class="text-gray-600 dark:text-gray-300"><span class="font-medium">Idade:</span> ${appointment.analysis.patient_info.data.age}</p>                                        
+                                    </div>
+                                    <div>
                                         <p class="text-gray-600 dark:text-gray-300"><span class="font-medium">Sexo:</span> ${appointment.analysis.patient_info.data.gender === '[placeholder]' ? 'Não informado' : appointment.analysis.patient_info.data.gender}</p>
                                     </div>
                                 </div>
@@ -403,9 +404,9 @@ export function AppointmentView(appointment) {
                             <h3 class="text-lg font-semibold text-gray-700 dark:text-gray-200">${appointment.analysis.anamnese.title}</h3>
                             <div class="bg-neutral-100 dark:bg-neutral-700 p-4 rounded-lg">
                                 <h4 class="font-medium text-gray-700 dark:text-gray-200">${appointment.analysis.anamnese.symptoms_title}:</h4>
-                                <ul class="list-disc pl-5 mt-2 text-gray-600 dark:text-gray-300">
-                                    ${appointment.analysis.anamnese.symptoms.map(symptom => `<li>${symptom}</li>`).join('')}
-                                </ul>
+                                <p class="list-disc pl-5 mt-2 text-gray-600 dark:text-gray-300">
+                                    ${appointment.analysis.anamnese.text}
+                                </p>
                             </div>
                         </div>
 
